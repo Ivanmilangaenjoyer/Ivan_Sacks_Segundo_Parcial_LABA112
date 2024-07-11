@@ -74,7 +74,7 @@ class Arbol(Objetos):
         self.colision_dercha = False
         self.colision_izquierda = False
         self.colision_arriba = False
-        self.vida = 2
+        self.vida = 1
         self.suerte = 4
         self.bandera_suerte = True
 
