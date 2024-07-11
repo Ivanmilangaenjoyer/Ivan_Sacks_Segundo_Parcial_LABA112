@@ -168,17 +168,17 @@ class Enemigo(Jugador):
 
     def movimiento(self, jugador):
         if jugador.rect.centerx < self.rect.centerx and self.colision_izquierda == False:
-            self.velocidad_x = 1
+            self.velocidad_x = 2
             self.rect.x -= self.velocidad_x
         if jugador.rect.centerx > self.rect.centerx and self.colision_derecha == False:
-            self.velocidad_x = 1
+            self.velocidad_x = 2
             self.rect.x += self.velocidad_x
 
         if jugador.rect.centery < self.rect.centery and self.colision_arriba == False:
-            self.velocidad_y = 1
+            self.velocidad_y = 2
             self.rect.y -= self.velocidad_y
         if jugador.rect.centery > self.rect.centery and self.colision_piso == False:
-            self.velocidad_y = 1
+            self.velocidad_y = 2
             self.rect.y += self.velocidad_y
 
 

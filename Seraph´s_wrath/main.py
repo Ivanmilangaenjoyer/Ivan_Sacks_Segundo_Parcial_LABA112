@@ -23,8 +23,6 @@ except:
 
     with open(path_completo, 'r') as archivo:
         contenido_actual = json.load(archivo)
-
-
 try:
     pygame.mixer.init()
 except pygame.error:
@@ -37,15 +35,13 @@ jugador = Jugador(r"Seraph´s_wrath\assets\prota\Quieto\Idle_0.png", (anchura_pr
 slime = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 400, 100, 5)
 slime_2 = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 500, 500, 5)
 slime_3 = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 600, 100, 5)
-slime_4 = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 700, 400, 5)
-slime_5 = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 800, 100, 5)
+
 
 grupo_jugador.add(jugador)
 grupo_enemigos.add(slime)
 grupo_enemigos.add(slime_2)
 grupo_enemigos.add(slime_3)
-grupo_enemigos.add(slime_4)
-grupo_enemigos.add(slime_5)
+
 
 
 cargar_linea_objetos(Objetos, r"Seraph´s_wrath\assets\fondos\musgo.png",0, 0, 70, 50, 22, grupo_paredes, {"x": 70, "y": 0})
@@ -117,6 +113,7 @@ while True:
         que_hace[1] = que_hace[0]
 
     if subir_nivel[1] > nivel_anterior:
+        cooldown_slime -= 100
         carta_nivel = cartas_usuario(ventana, lista_al, diccionario_cartas)
         nivel_anterior += 1
 
@@ -209,7 +206,10 @@ while True:
     movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
     tiempo_real = pygame.time.get_ticks()
     if jugador.vidas <= 0 and inmortalidad != True:
-        menu_muerte(ventana, jugador, Vidas)
+        with open(path_completo, "w") as file:   
+            contenido_actual.append(subir_nivel[1])
+            json.dump(contenido_actual, file)
+        menu_muerte(ventana, subir_nivel)
         cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
         dicc_cartas = {"telepatia": False, "veinte_veinte": False, "abel": False,
                         "biblia": False, "cerebro": False, "cuchillo": False,
@@ -235,9 +235,7 @@ while True:
         jugador.vidas = 4
         cargar_linea_objetos(Vidas, r"Seraph´s_wrath\assets\items\muertos\Transperent\Icon1.png",32, 20, 32, 32, 3, grupo_vidas, {"x": 50, "y": 0})
 
-        with open(path_completo, "w") as file:   
-            contenido_actual.append(subir_nivel[1])
-            json.dump(contenido_actual, file)
+
 
         with open(path_completo, 'r') as archivo:
             contenido_actual = json.load(archivo)

@@ -80,7 +80,14 @@ def cargar_linea_objetos(clase, dir_imagen: str, x: int, y: int, width: float, h
         y += incremento["y"] 
 
 
-def cargar_carta(dir_memoria, lista, coordenadas):
+def cargar_carta(dir_memoria: str, lista: list, coordenadas: tuple):
+    """Carga un conjunto de imagen-rectangulo en una lista
+
+    Args:
+        dir_memoria (str): La dirección en memoria de la carta
+        lista (list): La lista donde cargar el conjunto
+        coordenadas (tuple): Las coordenadas del rectangulo
+    """
     carta = pygame.image.load(dir_memoria)
     carta = pygame.transform.scale(carta, (250, 350))
     carta_rect = carta.get_rect()
@@ -93,6 +100,17 @@ def cargar_carta(dir_memoria, lista, coordenadas):
     lista.append(carta_rect)
 
 def cartas_usuario(ventana, lista_al, diccionario_cartas): 
+    """Imprime imagenes en pantalla,
+    devuelve la imagen seleccionada y la elimina de un diccionario
+
+    Args:
+        ventana (display): Lugar donde se imprimen las cartas
+        lista_al (list): lista con 3 cartas a imprimirse en pantalla 
+        diccionario_cartas (dict): El diccionario con las cartas
+
+    Returns:
+        str: El nombre de la carta elegida
+    """
     func = True
     diccionario_cartas = {"carta_0": [], "carta_1": [], "carta_2": []}
     lista_al = []
@@ -131,6 +149,13 @@ def cartas_usuario(ventana, lista_al, diccionario_cartas):
     return carta_elegida
 
 def cartas_random(lista_al, diccionario_cartas):
+    """Elige 3 claves diferentes de un diccionario
+    aleatoriamente y las agrega a una lista
+
+    Args:
+        lista_al (list): lista con las cartas elegidas
+        diccionario_cartas (dict): diccionario con las cartas
+    """
     numeros_posibles = []
 
     claves = list(cargar_cartas.keys())
@@ -187,23 +212,37 @@ def dibujar_rectangulo(ventana, imagen, rectangulo):
 
 
 def crear_bala_fuego(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos):
-        if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
-            ultima_bala_fuego = tiempo_actual
-            if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
-                print("hola")
-                bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx, jugador.rect.centery, 3, 3)
-            else:
-                if que_hace[1] == "derecha":
-                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
-                elif que_hace[1] == "izquierda":
-                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_izq.png",(30, 30),jugador.rect.centerx - 30, jugador.rect.centery, -5, 0)
-                elif que_hace[1] == "arriba":
-                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_arriba.png",(30, 30),jugador.rect.centerx, jugador.rect.centery -30, 0, -5)
-                elif que_hace[1] == "abajo":
-                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
-            
-            grupo_proyectiles.add(bala)
-        return ultima_bala_fuego
+    """Crea una bala cada x segundos, y la agrega a un grupo de sprites,
+    verifica e altera la bala si tiene que adquirir comportamientos diferentes
+
+    Args:
+        tiempo_actual (float): Tiempo transcurrido
+        ultima_bala_fuego (float): El tiempo donde la ultima bala fue lanzada
+        cooldown_bala_fuego (float): El cooldown de la bala
+        jugador (clas): El jugador donde se dispara la bala
+        Bala (class): La clase de la bala a crearse
+        grupo_proyectiles (group): Grupo a sumarse la bala
+        grupo_enemigos (group): grupo de enemigos
+
+    Returns:
+        ultima_bala_fuego(float): Cuando fue lanzada la ultima bala
+    """
+    if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
+        ultima_bala_fuego = tiempo_actual
+        if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
+            bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx, jugador.rect.centery, 3, 3)
+        else:
+            if que_hace[1] == "derecha":
+                bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
+            elif que_hace[1] == "izquierda":
+                bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_izq.png",(30, 30),jugador.rect.centerx - 30, jugador.rect.centery, -5, 0)
+            elif que_hace[1] == "arriba":
+                bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_arriba.png",(30, 30),jugador.rect.centerx, jugador.rect.centery -30, 0, -5)
+            elif que_hace[1] == "abajo":
+                bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
+        
+        grupo_proyectiles.add(bala)
+    return ultima_bala_fuego
 
 def crear_bala_fuego_inversa(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos):
         if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
@@ -467,7 +506,7 @@ def func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute):
                 muerte_sonido.set_volume(0)
         return ultimo_mute, mute
 
-def menu_muerte(ventana, jugador, Vidas):
+def menu_muerte(ventana, nivel):
     func = True
     inmortalidad = False
     pygame.mixer.music.pause()
@@ -487,7 +526,7 @@ def menu_muerte(ventana, jugador, Vidas):
 
         ventana.blit(imagen_muerte, (rect_muerte.x, rect_muerte.y))
         ventana.blit(imagen_salir, (rect_salir.x, rect_salir.y))
-        mostrar_texto(ventana, 400, "Puntaje", ((200,200)))
+        mostrar_texto(ventana, 80, f"Llegaste hasta el nivel: {nivel[1]}", ((500,200)))
 
         pygame.display.update()
 
