@@ -125,8 +125,12 @@ while True:
     ultimo_slime = crear_slime(rango_pos_x, rango_pos_y, Enemigo, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_real)
     
     if dicc_cartas["veinte_veinte"] and bandera_veinte_veinte:
-        cooldown_bala_fuego = cooldown_bala_fuego / 2
+        cooldown_bala_fuego = cooldown_bala_fuego - 300
         bandera_veinte_veinte = False
+
+    if dicc_cartas["telepatia"] and bandera_telepatia:
+        cooldown_bala_fuego * 2
+        bandera_telepatia = False
 
     if dicc_cartas["cerebro"]:
         crear_bala_fuego_inversa_2(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos)

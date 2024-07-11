@@ -32,6 +32,7 @@ cooldown_bala_fuego = 1500
 cooldown_cuchillo = 2000
 ultimo_slime = 0
 cooldown_slime = 2700
+bandera_telepatia = True
 bandera_veinte_veinte = True
 mute = False
 ultimo_mute = 0
