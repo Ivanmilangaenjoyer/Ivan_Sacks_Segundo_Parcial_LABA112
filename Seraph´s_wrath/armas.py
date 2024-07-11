@@ -1,4 +1,4 @@
-
+from pygame import mixer
 from config import *
 import pygame
 import sys, os
@@ -64,23 +64,22 @@ class Bala(pygame.sprite.Sprite):
 
 
     def limpiar_proyectiles(self):
-        if self.rect.centerx > 2000 or self.rect.centerx < 0:
+        if self.rect.centerx > 1540 or self.rect.centerx < 0:
             self.kill()
-        if self.rect.centery > 2000 or self.rect.centery < 0:
+        if self.rect.centery > 1250 or self.rect.centery < 0:
             self.kill()
 
     def movimiento_guiado(self, enemigo):
         if enemigo.rect.centerx < self.rect.centerx:
-            self.rect.centerx += (-3)
+            self.rect.centerx += (-5)
         if enemigo.rect.centerx > self.rect.centerx:
-            self.rect.centerx += 3
+            self.rect.centerx += 5
         if enemigo.rect.centery < self.rect.centery:
-            self.rect.centery += (-3)
+            self.rect.centery += (-5)
         if enemigo.rect.centery > self.rect.centery:
-            self.rect.centery += 3
+            self.rect.centery += 5
 
-
-    def update(self, pantalla, jugador, grupo_proyectiles, que_hace, grupo_enemigos, dicc_cartas):
+    def update(self, pantalla, jugador, grupo_proyectiles, que_hace, enemigo_cerca, dicc_cartas, grupo_enemigos):
         if dicc_cartas["glass_cannon"] and self.bandera_cannon:
             self.daño = self.daño * 2
             self.bandera_cannon = False
@@ -89,14 +88,13 @@ class Bala(pygame.sprite.Sprite):
             self.daño = self.daño * 2
             self.suicide_king = False
 
-        if dicc_cartas["telepatia"]:
+        if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
             self.cargar_partes_bala_guiada()
         else:
             self.cargar_partes_bala()       
 
         if len(grupo_enemigos) != 0 and dicc_cartas["telepatia"]:
-                ultimo_enemigo = grupo_enemigos.sprites()[0]
-                self.movimiento_guiado(ultimo_enemigo)
+                self.movimiento_guiado(enemigo_cerca)
         else:
             self.rect.x += self.velocidad_x
             self.rect.y += self.velocidad_y
@@ -106,6 +104,7 @@ class Bala(pygame.sprite.Sprite):
         if self.anim_muerte:
             self.explosion_bala()
         if self.muerte:
+            explosion_sonido.play()
             self.kill()
 
         
@@ -166,7 +165,7 @@ class Cuchillo(pygame.sprite.Sprite):
         self.rect.y -= self.velocidad_y
 
 
-    def update(self, pantalla, jugador, grupo_proyectiles, que_hace, grupo_enemigo, dicc_cartas):
+    def update(self, pantalla, jugador, grupo_proyectiles, que_hace, grupo_enemigo, dicc_cartas, enemigo):
         if dicc_cartas["glass_cannon"] and self.bandera_cannon:
             self.daño = self.daño * 2
             self.bandera_cannon = False

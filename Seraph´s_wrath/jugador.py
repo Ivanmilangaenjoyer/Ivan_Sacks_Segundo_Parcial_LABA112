@@ -4,6 +4,8 @@ import pygame, os
 from pygame.sprite import *
 from modulo_funciones import *
 import math, random
+from pygame import mixer
+
 directorio = os.getcwd()   
 
 class Jugador(pygame.sprite.Sprite):
@@ -29,6 +31,7 @@ class Jugador(pygame.sprite.Sprite):
         self.colision_arriba = False
         self.cargar_partes_rectangulos()
         self.vidas = 3
+        self.bandera_suicide_king = True
 
     def cargar_partes_rectangulos(self):
         self.diccionario_rectangulos["main"] = self.rect
@@ -94,7 +97,8 @@ class Jugador(pygame.sprite.Sprite):
         self.colision_izquierda = False
         self.colision_arriba = False
 
-        if dicc_cartas["suicide_king"]:
+        if dicc_cartas["suicide_king"] and self.bandera_suicide_king:
+            self.bandera_suicide_king = False
             self.vidas = 1
         
         for grupo in lista_grupos:
@@ -121,7 +125,7 @@ class Vidas(Jugador):
             v += 1
         self.vidas = v
 
-        if jugador.vidas < self.vidas and jugador.vidas != 0:
+        if jugador.vidas < self.vidas and jugador.vidas > 0:
             ultimo_sprite = grupo_vidas.sprites()[-1] 
             grupo_vidas.remove(ultimo_sprite)  
 
@@ -136,8 +140,8 @@ class Enemigo(Jugador):
         self.colision = True
         self.devaluacion_nivelar = 0
         self.lista_colisiones = ["top", "right", "left", "bottom"]
-        self.velocidad_x = 2
-        self.velocidad_y = 2
+        self.velocidad_x = 3
+        self.velocidad_y = 3
         self.vidas = 2
         self.daño = 1
         self.cooldown_ataque = 1000

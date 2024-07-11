@@ -1,5 +1,5 @@
 import pygame, os
-
+from pygame import mixer
 FPS = 30
 reloj = pygame.time.Clock()
 directorio = os.getcwd()   
@@ -31,13 +31,61 @@ ultimo_cuchillo = 0
 cooldown_bala_fuego = 1500
 cooldown_cuchillo = 2000
 ultimo_slime = 0
-cooldown_slime = 3000
+cooldown_slime = 2000
 bandera_veinte_veinte = True
+mute = False
+ultimo_mute = 0
+cooldown_mute = 500
+inmortalidad = False
+
+def crear_rectango_imagen(dir_imagen, pos_x, pos_y, medidas ):
+    imagen = pygame.transform.scale(pygame.image.load(dir_imagen), medidas)
+    rect = imagen.get_rect(centerx = (pos_x), centery = (pos_y))
+    return imagen, rect
+
+imagen_fama, rect_fama = crear_rectango_imagen(r"Seraph´s_wrath\assets\fondos\Salon_fama.jpg", anchura // 2, altura // 2, ((anchura, altura)))
+
+imagen_muerte, rect_muerte = crear_rectango_imagen(r"Seraph´s_wrath\assets\fondos\muerte.png", anchura // 2, altura // 2, ((anchura, altura)))
+
+
+imagen_reintentar, rect_reintentar = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\reintentar.png", anchura // 2, 200, ((400, 100)))
+
+
+imagen_atras, rect_atras = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\atras.png", 50, 50, ((100, 100)))
+
+imagen_musica_on, rect_musica_on = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\musica_on.png", anchura // 2, 100, ((400, 100)))
+imagen_musica_off, rect_musica_off = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\musica_off.png", anchura // 2, 100, ((400, 100)))
+
+
+imagen_inmortalidad_on, rect_inmortalidad_on = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\inmortalidad_on.png", anchura // 2, 250, ((400, 100)))
+imagen_inmortalidad_off, rect_inmortalidad_off = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\inmortalidad_off.png", anchura // 2, 250, ((400, 100)))
+
+imagen_efectos_off, rect_efectos_off = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\efectos_off.png", anchura // 2, 400, ((400, 100)))
+imagen_efectos_on, rect_efectos_on = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\efectos_on.png", anchura // 2, 400, ((400, 100)))
+
+imagen_fondo_opciones, rect_fondo_opciones = crear_rectango_imagen(r"Seraph´s_wrath\assets\fondos\templo.jpg", anchura // 2, altura // 2, ((anchura, altura)))
+
+imagen_mute = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\botones\mute.png"), ((50, 50)))
+rect_mute = imagen_mute.get_rect(centerx = (60), centery = (470))
+
 abel_imagen = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\armas\Objeto_Abel.png"), ((30, 30)))
 imagen_pausa = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\GUI\Pause menu\pausa.png"), ((400, 300)))
 rect_pausa = imagen_pausa.get_rect(centerx = (anchura // 2), centery = (altura // 2))
 
+imagen_empezar = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\botones\empezar.png"), ((400, 100)))
+rect_empezar = imagen_empezar.get_rect(centerx = (anchura // 2), centery = (80))
 
+imagen_opciones = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\botones\opciones.png"), ((400, 100)))
+rect_opciones = imagen_opciones.get_rect(centerx = (anchura // 2), centery = (200))
+
+imagen_ranking = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\botones\ranking.png"), ((400, 100)))
+rect_ranking = imagen_ranking.get_rect(centerx = (anchura // 2), centery = (320))
+
+imagen_salir = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\botones\salir.png"), ((400, 100)))
+rect_salir = imagen_salir.get_rect(centerx = (anchura // 2), centery = (430))
+
+imagen_jungla = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\fondos\jungla.jpg"), ((900, 500)))
+rect_jungla = imagen_jungla.get_rect(centerx = (anchura // 2), centery = (altura // 2))
 
 cargar_cartas = {"veinte_veinte": r"Seraph´s_wrath\assets\cartas\veinte_veinte.jpg", "abel": r"Seraph´s_wrath\assets\cartas\abel.jpg", "biblia": r"Seraph´s_wrath\assets\cartas\biblia.jpg", 
                 "cerebro": r"Seraph´s_wrath\assets\cartas\cerebro.jpg", "cuchillo": r"Seraph´s_wrath\assets\cartas\cuchillo.jpg", "glass_cannon": r"Seraph´s_wrath\assets\cartas\glass_cannon.jpg",
@@ -118,4 +166,18 @@ dicc_cartas = {"telepatia": False, "veinte_veinte": False, "abel": False,
                 "penny": False, "sacrificial_dagger": False, "steam_final": False,
                 "suicide_king": False, "xray": False}
 
+try:
+    pygame.mixer.init()
+except pygame.error:
+    print('No se pudo inicializar el módulo de sonido de Pygame')
 
+pygame.mixer.music.load(r"Seraph´s_wrath\assets\sonidos\vampire_ost.mp3")
+pygame.mixer.music.set_volume(0.3)
+
+explosion_sonido = pygame.mixer.Sound(r"Seraph´s_wrath\assets\sonidos\explosion.mp3")
+cuchillo_sonido = pygame.mixer.Sound(r"Seraph´s_wrath\assets\sonidos\cuchillo.mp3")
+muerte_sonido = pygame.mixer.Sound(r"Seraph´s_wrath\assets\sonidos\recibir_daño.mp3")
+
+cuchillo_sonido.set_volume(0.1)
+explosion_sonido.set_volume(0.1)
+muerte_sonido.set_volume(0.1)

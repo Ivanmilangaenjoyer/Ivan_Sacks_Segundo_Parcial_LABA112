@@ -5,6 +5,8 @@ from config import *
 from modulo_funciones import *
 from jugador import *
 import random, math
+from pygame import mixer
+
 directorio = os.getcwd()   
 
 class Objetos(pygame.sprite.Sprite):
@@ -42,28 +44,28 @@ class OrbeVida(Objetos):
     def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad):
         super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad)
 
-    def colisiones(self, jugador, lados_colisionar, grupo_vidas):
+    def colisiones(self, jugador, lados_colisionar, grupo_vidas, dicc_cartas):
         if self.diccionario_rectangulos[lados_colisionar[0]].colliderect(jugador.diccionario_rectangulos[lados_colisionar[1]]):
             offset = (jugador.rect.x - self.rect.x, jugador.rect.y - self.rect.y)
             if self.mask.overlap(jugador.mask, offset):
                 if lados_colisionar[0] == "bottom" or lados_colisionar[0] == "top" or lados_colisionar[0] == "right" or lados_colisionar[0] == "left":
-                    if jugador.vidas > 0:
+                    if dicc_cartas["suicide_king"] == False:
                         jugador.vidas += 1
                         ultima_vida = grupo_vidas.sprites()[-1]
                         cargar_linea_objetos(Vidas, r"Seraph´s_wrath\assets\items\muertos\Transperent\Icon1.png",ultima_vida.rect.centerx + 50, ultima_vida.rect.centery, 32, 32, 1, grupo_vidas, {"x": 0, "y": 0})
                     self.kill()
 
-    def update(self, pantalla, jugador, grupo_vidas):
+    def update(self, pantalla, jugador, grupo_vidas, dicc_cartas):
         self.cargar_partes_rectangulos_paredes()
         self.colision_piso = False
         self.colision_dercha = False
         self.colision_izquierda = False
         self.colision_arriba = False
 
-        self.colisiones(jugador, (("bottom", "top")), grupo_vidas)
-        self.colisiones(jugador, (("top", "bottom")), grupo_vidas)
-        self.colisiones(jugador, (("right", "left")), grupo_vidas)
-        self.colisiones(jugador, (("left", "right")), grupo_vidas)
+        self.colisiones(jugador, (("bottom", "top")), grupo_vidas, dicc_cartas)
+        self.colisiones(jugador, (("top", "bottom")), grupo_vidas, dicc_cartas)
+        self.colisiones(jugador, (("right", "left")), grupo_vidas, dicc_cartas)
+        self.colisiones(jugador, (("left", "right")), grupo_vidas, dicc_cartas)
 
 class Arbol(Objetos):
     def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad):
