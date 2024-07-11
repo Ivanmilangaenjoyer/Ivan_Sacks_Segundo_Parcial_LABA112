@@ -17,11 +17,11 @@ jugador_colision = False
 movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
 lista_grupos = []
 lista_al = []
-fondo = pygame.image.load(r"assets\fondos\veerde.jpg")
+fondo = pygame.image.load(r"Seraph´s_wrath\assets\fondos\veerde.jpg")
 ultima_bala = 0
 tiempo_real = pygame.time.get_ticks()
 cooldown_bala = 3000
-bloque = pygame.image.load(r"assets\fondos\veerde.jpg")
+bloque = pygame.image.load(r"Seraph´s_wrath\assets\fondos\veerde.jpg")
 vidas = 3
 nivel_anterior = 0
 subir_nivel = [0, 0]
@@ -33,67 +33,67 @@ cooldown_cuchillo = 2000
 ultimo_slime = 0
 cooldown_slime = 3000
 bandera_veinte_veinte = True
-abel_imagen = pygame.transform.scale(pygame.image.load(r"assets\armas\Objeto_Abel.png"), ((30, 30)))
-imagen_pausa = pygame.transform.scale(pygame.image.load(r"assets\GUI\Pause menu\pausa.png"), ((400, 300)))
+abel_imagen = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\armas\Objeto_Abel.png"), ((30, 30)))
+imagen_pausa = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\GUI\Pause menu\pausa.png"), ((400, 300)))
 rect_pausa = imagen_pausa.get_rect(centerx = (anchura // 2), centery = (altura // 2))
 
 
 
-cargar_cartas = {"veinte_veinte": r"assets\cartas\veinte_veinte.jpg", "abel": r"assets\cartas\abel.jpg", "biblia": r"assets\cartas\biblia.jpg", 
-                "cerebro": r"assets\cartas\cerebro.jpg", "cuchillo": r"assets\cartas\cuchillo.jpg", "glass_cannon": r"assets\cartas\glass_cannon.jpg",
-                "lucky_foot": r"assets\cartas\lucky_foot.jpg", "midas": r"assets\cartas\midas.jpg", "penny": r"assets\cartas\penny.jpg", "sacrificial_dagger": r"assets\cartas\sacrificial_dagger.jpg",
-                "steam_final": r"assets\cartas\steam_final.jpg", "suicide_king": r"assets\cartas\suicide_king.jpg", "telepatia": r"assets\cartas\telepatia.jpg", "xray": r"assets\cartas\xray.jpg"}
+cargar_cartas = {"veinte_veinte": r"Seraph´s_wrath\assets\cartas\veinte_veinte.jpg", "abel": r"Seraph´s_wrath\assets\cartas\abel.jpg", "biblia": r"Seraph´s_wrath\assets\cartas\biblia.jpg", 
+                "cerebro": r"Seraph´s_wrath\assets\cartas\cerebro.jpg", "cuchillo": r"Seraph´s_wrath\assets\cartas\cuchillo.jpg", "glass_cannon": r"Seraph´s_wrath\assets\cartas\glass_cannon.jpg",
+                "lucky_foot": r"Seraph´s_wrath\assets\cartas\lucky_foot.jpg", "midas": r"Seraph´s_wrath\assets\cartas\midas.jpg", "penny": r"Seraph´s_wrath\assets\cartas\penny.jpg", "sacrificial_dagger": r"Seraph´s_wrath\assets\cartas\sacrificial_dagger.jpg",
+                "steam_final": r"Seraph´s_wrath\assets\cartas\steam_final.jpg", "suicide_king": r"Seraph´s_wrath\assets\cartas\suicide_king.jpg", "telepatia": r"Seraph´s_wrath\assets\cartas\telepatia.jpg", "xray": r"Seraph´s_wrath\assets\cartas\xray.jpg"}
 
-personaje_quieto = [pygame.transform.scale(pygame.image.load(r"assets\prota\Quieto\Idle_0.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Quieto\Idle_1.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Quieto\Idle_2.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Quieto\Idle_3.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Quieto\Idle_4.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Quieto\Idle_5.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Quieto\Idle_6.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Quieto\Idle_7.png"), ((130, 70))),
+personaje_quieto = [pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Quieto\Idle_0.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Quieto\Idle_1.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Quieto\Idle_2.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Quieto\Idle_3.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Quieto\Idle_4.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Quieto\Idle_5.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Quieto\Idle_6.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Quieto\Idle_7.png"), ((130, 70))),
                     ]
 
-personaje_derecha = [pygame.transform.scale(pygame.image.load(r"assets\prota\Derecha\derecha_0.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Derecha\derecha_1.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Derecha\derecha_2.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Derecha\derecha_3.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Derecha\derecha_4.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Derecha\derecha_5.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Derecha\derecha_6.png"), ((130, 70))),
+personaje_derecha = [pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Derecha\derecha_0.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Derecha\derecha_1.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Derecha\derecha_2.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Derecha\derecha_3.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Derecha\derecha_4.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Derecha\derecha_5.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Derecha\derecha_6.png"), ((130, 70))),
                     ]
 
-personaje_izquierda = [pygame.transform.scale(pygame.image.load(r"assets\prota\Izquierda\izquierda_0.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Izquierda\izquierda_1.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Izquierda\izquierda_2.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Izquierda\izquierda_3.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Izquierda\izquierda_4.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Izquierda\izquierda_5.png"), ((130, 70))),
-                    pygame.transform.scale(pygame.image.load(r"assets\prota\Izquierda\izquierda_6.png"), ((130, 70))),
+personaje_izquierda = [pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Izquierda\izquierda_0.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Izquierda\izquierda_1.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Izquierda\izquierda_2.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Izquierda\izquierda_3.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Izquierda\izquierda_4.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Izquierda\izquierda_5.png"), ((130, 70))),
+                    pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\prota\Izquierda\izquierda_6.png"), ((130, 70))),
                     ]
 
-explosion = [pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_0.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_1.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_2.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_3.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_4.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_5.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_6.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_7.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_8.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_9.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_10.png"), ((96, 96))),
-            pygame.transform.scale(pygame.image.load(r"assets\animaciones\Explosion_11.png"), ((96, 96))),
+explosion = [pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_0.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_1.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_2.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_3.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_4.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_5.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_6.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_7.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_8.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_9.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_10.png"), ((96, 96))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_11.png"), ((96, 96))),
             ]
 
 slime_derecha = [
-            pygame.transform.scale(pygame.image.load(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png"), ((128, 40))),
-            pygame.transform.scale(pygame.image.load(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_1.png"), ((128, 40))),
-            pygame.transform.scale(pygame.image.load(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_2.png"), ((128, 40))),
-            pygame.transform.scale(pygame.image.load(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_3.png"), ((128, 40))),
-            pygame.transform.scale(pygame.image.load(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_4.png"), ((128, 40))),
-            pygame.transform.scale(pygame.image.load(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_5.png"), ((128, 40))),
-            pygame.transform.scale(pygame.image.load(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_6.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_1.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_2.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_3.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_4.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_5.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_6.png"), ((128, 40))),
 
         ]
 

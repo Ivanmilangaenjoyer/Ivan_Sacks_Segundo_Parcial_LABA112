@@ -13,12 +13,12 @@ pygame.font.init()
 ventana = pygame.display.set_mode((anchura, altura))
 pygame.display.set_caption("Seraph´s wrath")
 
-jugador = Jugador(r"assets\prota\Quieto\Idle_0.png", (anchura_prota, altura_prota), anchura // 2, altura // 2, 5)
-slime = Enemigo(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 400, 100, 5)
-slime_2 = Enemigo(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 500, 500, 5)
-slime_3 = Enemigo(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 600, 100, 5)
-slime_4 = Enemigo(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 700, 400, 5)
-slime_5 = Enemigo(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 800, 100, 5)
+jugador = Jugador(r"Seraph´s_wrath\assets\prota\Quieto\Idle_0.png", (anchura_prota, altura_prota), anchura // 2, altura // 2, 5)
+slime = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 400, 100, 5)
+slime_2 = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 500, 500, 5)
+slime_3 = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 600, 100, 5)
+slime_4 = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 700, 400, 5)
+slime_5 = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 800, 100, 5)
 
 
 grupo_jugador.add(jugador)
@@ -29,23 +29,23 @@ grupo_enemigos.add(slime_4)
 grupo_enemigos.add(slime_5)
 
 
-# cargar_linea_objetos(Enemigo, r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", 300, 100, 128, 40, 10, grupo_enemigos, {"x": 80, "y": 40})
+# cargar_linea_objetos(Enemigo, r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", 300, 100, 128, 40, 10, grupo_enemigos, {"x": 80, "y": 40})
 
-cargar_linea_objetos(Objetos, r"assets\fondos\musgo.png",0, 0, 70, 50, 22, grupo_paredes, {"x": 70, "y": 0})
-cargar_linea_objetos(Objetos, r"assets\fondos\musgo.png",0, 0, 70, 50, 25, grupo_paredes, {"x": 0, "y": 50})
-cargar_linea_objetos(Objetos, r"assets\fondos\musgo.png",1540, 0, 70, 50, 26, grupo_paredes, {"x": 0, "y": 50})
-cargar_linea_objetos(Objetos, r"assets\fondos\musgo.png",0, 1250, 70, 50, 26, grupo_paredes, {"x": 70, "y": 0})
+cargar_linea_objetos(Objetos, r"Seraph´s_wrath\assets\fondos\musgo.png",0, 0, 70, 50, 22, grupo_paredes, {"x": 70, "y": 0})
+cargar_linea_objetos(Objetos, r"Seraph´s_wrath\assets\fondos\musgo.png",0, 0, 70, 50, 25, grupo_paredes, {"x": 0, "y": 50})
+cargar_linea_objetos(Objetos, r"Seraph´s_wrath\assets\fondos\musgo.png",1540, 0, 70, 50, 26, grupo_paredes, {"x": 0, "y": 50})
+cargar_linea_objetos(Objetos, r"Seraph´s_wrath\assets\fondos\musgo.png",0, 1250, 70, 50, 26, grupo_paredes, {"x": 70, "y": 0})
 
 for vueltas in range(10):
     num_x = random.randrange(200, 1400)
     num_y = random.randrange(200, 1000)
 
-    cargar_linea_objetos(Arbol, r"assets\objetos_entorno\Arboles\fir_tree_4.png", num_x, num_y, 50, 150, 1, grupo_arboles, {"x": 0, "y": 0})
+    cargar_linea_objetos(Arbol, r"Seraph´s_wrath\assets\objetos_entorno\Arboles\fir_tree_4.png", num_x, num_y, 50, 150, 1, grupo_arboles, {"x": 0, "y": 0})
 
-cargar_linea_objetos(Vidas, r"assets\items\muertos\Transperent\Icon1.png",32, 20, 32, 32, 3, grupo_vidas, {"x": 50, "y": 0})
+cargar_linea_objetos(Vidas, r"Seraph´s_wrath\assets\items\muertos\Transperent\Icon1.png",32, 20, 32, 32, 3, grupo_vidas, {"x": 50, "y": 0})
 
-cargar_linea_objetos(Xp, r"assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
-cargar_linea_objetos(Xp, r"assets\GUI\Settings\Bar.png", -5, 495, 9, 10, 1, grupo_xp, {"x": 0, "y": 0})
+cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
+cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar.png", -5, 495, 9, 10, 1, grupo_xp, {"x": 0, "y": 0})
 
 cantidad_xp = 5
 while True:
@@ -105,7 +105,7 @@ while True:
         num_x = random.randrange(200, 1400)
         num_y = random.randrange(200, 1000)
 
-        cargar_linea_objetos(Arbol, r"assets\objetos_entorno\Arboles\fir_tree_4.png", num_x, num_y, 50, 150, 1, grupo_arboles, {"x": 0, "y": 0})
+        cargar_linea_objetos(Arbol, r"Seraph´s_wrath\assets\objetos_entorno\Arboles\fir_tree_4.png", num_x, num_y, 50, 150, 1, grupo_arboles, {"x": 0, "y": 0})
 
     rango_pos_x, rango_pos_y = rango_jugador(jugador)
     ultimo_slime = crear_slime(rango_pos_x, rango_pos_y, Enemigo, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_real)

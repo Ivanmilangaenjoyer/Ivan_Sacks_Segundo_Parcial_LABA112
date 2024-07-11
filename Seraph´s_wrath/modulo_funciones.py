@@ -170,16 +170,16 @@ def crear_bala_fuego(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, juga
         if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
             ultima_bala_fuego = tiempo_actual
             if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
-                bala = Bala(r"assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx, jugador.rect.centery, 3, 3)
+                bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx, jugador.rect.centery, 3, 3)
             else:
                 if que_hace[1] == "derecha":
-                    bala = Bala(r"assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
+                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
                 elif que_hace[1] == "izquierda":
-                    bala = Bala(r"assets\armas\bola_fuego_izq.png",(30, 30),jugador.rect.centerx - 30, jugador.rect.centery, -5, 0)
+                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_izq.png",(30, 30),jugador.rect.centerx - 30, jugador.rect.centery, -5, 0)
                 elif que_hace[1] == "arriba":
-                    bala = Bala(r"assets\armas\bola_fuego_arriba.png",(30, 30),jugador.rect.centerx, jugador.rect.centery -30, 0, -5)
+                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_arriba.png",(30, 30),jugador.rect.centerx, jugador.rect.centery -30, 0, -5)
                 elif que_hace[1] == "abajo":
-                    bala = Bala(r"assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
+                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
             
             grupo_proyectiles.add(bala)
         return ultima_bala_fuego
@@ -188,16 +188,16 @@ def crear_bala_fuego_inversa(tiempo_actual, ultima_bala_fuego, cooldown_bala_fue
         if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
             ultima_bala_fuego = tiempo_actual
             if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
-                bala = Bala(r"assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx - 10, jugador.rect.centery + 10, 3, 3)
+                bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx - 10, jugador.rect.centery + 10, 3, 3)
             else:
                 if que_hace[1] == "izquierda":
-                    bala = Bala(r"assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
+                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
                 elif que_hace[1] == "derecha":
-                    bala = Bala(r"assets\armas\bola_fuego_izq.png",(30, 30),jugador.rect.centerx - 30, jugador.rect.centery, -5, 0)
+                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_izq.png",(30, 30),jugador.rect.centerx - 30, jugador.rect.centery, -5, 0)
                 elif que_hace[1] == "abajo":
-                    bala = Bala(r"assets\armas\bola_fuego_arriba.png",(30, 30),jugador.rect.centerx, jugador.rect.centery -30, 0, -5)
+                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_arriba.png",(30, 30),jugador.rect.centerx, jugador.rect.centery -30, 0, -5)
                 elif que_hace[1] == "arriba":
-                    bala = Bala(r"assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
+                    bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
             
             grupo_proyectiles.add(bala)
 
@@ -205,16 +205,16 @@ def crear_bala_fuego_inversa_2(tiempo_actual, ultima_bala_fuego, cooldown_bala_f
         if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
             ultima_bala_fuego = tiempo_actual
             if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
-                bala1 = Bala(r"assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx + 10, jugador.rect.centery + 10, 3, 3)
-                bala2 = Bala(r"assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx - 10, jugador.rect.centery - 10, 3, 3)
+                bala1 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx + 10, jugador.rect.centery + 10, 3, 3)
+                bala2 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx - 10, jugador.rect.centery - 10, 3, 3)
 
             else:
                 if que_hace[1] == "izquierda" or que_hace[1] == "derecha":
-                    bala1 = Bala(r"assets\armas\bola_fuego_arriba.png",(30, 30),jugador.rect.centerx, jugador.rect.centery -30, 0, -5)
-                    bala2 = Bala(r"assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
+                    bala1 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_arriba.png",(30, 30),jugador.rect.centerx, jugador.rect.centery -30, 0, -5)
+                    bala2 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
                 elif que_hace[1] == "abajo" or que_hace[1] == "arriba":
-                    bala1 = Bala(r"assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
-                    bala2 = Bala(r"assets\armas\bola_fuego_izq.png",(30, 30),jugador.rect.centerx - 30, jugador.rect.centery, -5, 0)
+                    bala1 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
+                    bala2 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_izq.png",(30, 30),jugador.rect.centerx - 30, jugador.rect.centery, -5, 0)
 
             grupo_proyectiles.add(bala1)
             grupo_proyectiles.add(bala2)
@@ -223,14 +223,14 @@ def crear_bala_fuego_inversa_2(tiempo_actual, ultima_bala_fuego, cooldown_bala_f
 def crear_cuchillo(tiempo_actual, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles):
         if tiempo_actual - ultimo_cuchillo > cooldown_cuchillo:
             ultimo_cuchillo = tiempo_actual
-            cuchillo = Cuchillo(r"assets\armas\tramontina_abajo.png", (60, 90), jugador.rect.centerx, jugador.rect.top, 1, 4)
+            cuchillo = Cuchillo(r"Seraph´s_wrath\assets\armas\tramontina_abajo.png", (60, 90), jugador.rect.centerx, jugador.rect.top, 1, 4)
             grupo_proyectiles.add(cuchillo)
         return ultimo_cuchillo
 
 def crear_cuchillo_2(tiempo_actual, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles):
         if tiempo_actual - ultimo_cuchillo > cooldown_cuchillo:
             ultimo_cuchillo = tiempo_actual
-            cuchillo = Cuchillo(r"assets\armas\tramontina_abajo.png", (60, 90), jugador.rect.centerx + 20, jugador.rect.top, 1, 4)
+            cuchillo = Cuchillo(r"Seraph´s_wrath\assets\armas\tramontina_abajo.png", (60, 90), jugador.rect.centerx + 20, jugador.rect.top, 1, 4)
             grupo_proyectiles.add(cuchillo)
 
 def rango_jugador(jugador):
@@ -265,7 +265,7 @@ def rango_jugador(jugador):
 def crear_slime(pos_x, pos_y, Enemigo, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_actual):
     if tiempo_actual - ultimo_slime > cooldown_slime:
         ultimo_slime = tiempo_actual
-        slime = Enemigo(r"assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), pos_x, pos_y, 5)
+        slime = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), pos_x, pos_y, 5)
         grupo_enemigos.add(slime)
         
     return ultimo_slime

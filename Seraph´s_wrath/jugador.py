@@ -126,11 +126,6 @@ class Vidas(Jugador):
             grupo_vidas.remove(ultimo_sprite)  
 
 
-
-        
-        
-
-
 class Enemigo(Jugador):
     def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad):
         super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad = 0)
@@ -262,7 +257,7 @@ class Enemigo(Jugador):
         self.colisiones_enemigo(grupo_enemigos, (("left", "right")))
 
         if dicc_cartas["xray"] and self.vidas > 0:
-            dire = r"assets\GUI\Inventory and Stats\vida"
+            dire = r"Seraph´s_wrath\assets\GUI\Inventory and Stats\vida"
             vida_image = pygame.transform.scale(pygame.image.load(f"{dire}_{self.vidas}.png"), ((50, 50)))
             vida_rect = self.image.get_rect(centerx = self.rect.centerx + 30, centery = self.rect.centery - 45)
             pantalla.blit(vida_image, (vida_rect.x - offset_x, vida_rect.y - offset_y))

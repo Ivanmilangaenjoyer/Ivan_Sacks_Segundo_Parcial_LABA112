@@ -50,7 +50,7 @@ class OrbeVida(Objetos):
                     if jugador.vidas > 0:
                         jugador.vidas += 1
                         ultima_vida = grupo_vidas.sprites()[-1]
-                        cargar_linea_objetos(Vidas, r"assets\items\muertos\Transperent\Icon1.png",ultima_vida.rect.centerx + 50, ultima_vida.rect.centery, 32, 32, 1, grupo_vidas, {"x": 0, "y": 0})
+                        cargar_linea_objetos(Vidas, r"Seraph´s_wrath\assets\items\muertos\Transperent\Icon1.png",ultima_vida.rect.centerx + 50, ultima_vida.rect.centery, 32, 32, 1, grupo_vidas, {"x": 0, "y": 0})
                     self.kill()
 
     def update(self, pantalla, jugador, grupo_vidas):
@@ -79,7 +79,7 @@ class Arbol(Objetos):
     def soltar_objeto(self, grupo_coleccionables):
         numero_aleatorio = random.randint(1, self.suerte)
         if numero_aleatorio == 1:
-            cargar_linea_objetos(OrbeVida, r"assets\items\Bonus\Bonus_2_3.png",self.rect.centerx, self.rect.centery, 30, 30, 1, grupo_coleccionables, {"x": 0, "y": 0})
+            cargar_linea_objetos(OrbeVida, r"Seraph´s_wrath\assets\items\Bonus\Bonus_2_3.png",self.rect.centerx, self.rect.centery, 30, 30, 1, grupo_coleccionables, {"x": 0, "y": 0})
         
     def colisiones(self, grupo_objetos, lados_colisionar, grupo_coleccionables):
         for objeto in grupo_objetos:
@@ -137,19 +137,19 @@ class Xp(Objetos):
             if subir_nivel[0] < 101:
                 x = 0
                 while x < xp_pixels:
-                    nuevo_xp = Xp(r"assets\GUI\Settings\Bar.png",(9, 10), x, 495)
+                    nuevo_xp = Xp(r"Seraph´s_wrath\assets\GUI\Settings\Bar.png",(9, 10), x, 495)
                     grupo_xp.add(nuevo_xp)
                     x += 9
             else:
                 print("Sube de nivel", subir_nivel[1])
                 grupo_xp.empty()
-                cargar_linea_objetos(Xp, r"assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
-                nuevo_xp = Xp(r"assets\GUI\Settings\Bar.png",(9, 10), -5, 495)
+                cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
+                nuevo_xp = Xp(r"Seraph´s_wrath\assets\GUI\Settings\Bar.png",(9, 10), -5, 495)
                 grupo_xp.add(nuevo_xp)
                 subir_nivel[0] = 0
                 subir_nivel[1] += 1
         else:
-            cargar_linea_objetos(Xp, r"assets\GUI\Settings\Bar.png", 0, 495, 30, 10, 30, grupo_xp, {"x": 32, "y": 0})
+            cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar.png", 0, 495, 30, 10, 30, grupo_xp, {"x": 32, "y": 0})
 
 
 
