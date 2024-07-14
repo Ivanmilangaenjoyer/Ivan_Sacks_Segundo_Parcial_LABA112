@@ -1,16 +1,17 @@
-import pygame, time, sys
+import pygame, time, sys, random
 from config import *
 from modulo_funciones import *
 from pygame.locals import *
-import random
 from paredes import *
 from jugador import *
 from armas import *
+from cargas import *
 import json
 
 pygame.init()
 pygame.font.init()
 
+pygame.display.set_icon(icono)
 directorio = os.path.join(directorio, "Seraph´s_wrath")
 path_completo = os.path.join(directorio, "Nivel.json")
 
@@ -56,7 +57,7 @@ cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar.png", -5, 495
 cantidad_xp = 5
 
 pygame.mixer.music.play(-1)
-inmortalidad = menu_principal(ventana, inmortalidad, contenido_actual)
+inmortalidad = menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchura, altura, dicc_sonidos)
 
 while True:
     reloj.tick(FPS)
@@ -72,10 +73,13 @@ while True:
         ultimo_xp.ganar_xp(grupo_xp, 10, subir_nivel)
 
     if teclas[K_p] and tiempo_real > 2000:
-        pausa(ventana, rect_pausa, offset_x, offset_y)
+        pausa(ventana, rect_pausa, imagen_pausa)
+
+    if teclas[K_k]:
+        jugador.vidas -= 1
 
     if teclas[K_m]:
-        ultimo_mute, mute = func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute)
+        ultimo_mute, mute = func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute, dicc_sonidos)
 
     if teclas[K_d] or teclas[K_a] or teclas[K_w] or teclas[K_s]:
         if teclas[K_d]:
@@ -107,7 +111,9 @@ while True:
 
     if subir_nivel[1] > nivel_anterior:
         cooldown_slime -= 100
-        carta_nivel = cartas_usuario(ventana, lista_al, diccionario_cartas)
+        carta_nivel = cartas_usuario(ventana, lista_al, diccionario_cartas, cargar_cartas, anchura, altura)
+        ultima_bala_fuego = tiempo_real
+        ultima_bala_fuego = tiempo_real
         nivel_anterior += 1
 
     for clave in dicc_cartas:
@@ -125,26 +131,31 @@ while True:
     ultimo_slime = crear_slime(rango_pos_x, rango_pos_y, Enemigo, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_real)
     
     if dicc_cartas["veinte_veinte"] and bandera_veinte_veinte:
-        cooldown_bala_fuego = cooldown_bala_fuego - 300
+        cooldown_bala_fuego = cooldown_bala_fuego - 500
         bandera_veinte_veinte = False
 
     if dicc_cartas["telepatia"] and bandera_telepatia:
-        cooldown_bala_fuego * 2
+        cooldown_bala_fuego += 3000
         bandera_telepatia = False
 
     if dicc_cartas["cerebro"]:
-        crear_bala_fuego_inversa_2(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos)
+        crear_bala_fuego_inversa_2(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos,
+                                dicc_cartas, que_hace)
 
     if dicc_cartas["biblia"]:
-        crear_bala_fuego_inversa(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos)
+        crear_bala_fuego_inversa(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, 
+                                grupo_enemigos, dicc_cartas, que_hace)
 
-    ultima_bala_fuego = crear_bala_fuego(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos)
+    ultima_bala_fuego = crear_bala_fuego(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos,
+                                        dicc_cartas, que_hace)
     
     if dicc_cartas["sacrificial_dagger"] and dicc_cartas["cuchillo"]:
-        crear_cuchillo_2(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles)
+        crear_cuchillo_2(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles
+                        , dicc_sonidos)
 
     if dicc_cartas["cuchillo"]:
-        ultimo_cuchillo = crear_cuchillo(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles)
+        ultimo_cuchillo = crear_cuchillo(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, 
+                                        grupo_proyectiles, dicc_sonidos)
 
     if ((jugador.rect.right - offset_x >= anchura - scroll_area_width) and jugador.velocidad_x > 0) and offset_x < 640 or (
             (jugador.rect.left - offset_x <= scroll_area_width) and jugador.velocidad_x < 0) and offset_x > 0:
@@ -154,7 +165,7 @@ while True:
             (jugador.rect.bottom - offset_y <= scroll_area_height) and jugador.velocidad_y < 0) and offset_y > 0:
         offset_y += jugador.velocidad_y
 
-    bg, bg_image = obtener_fondo(bloque, offset_x, offset_y)
+    bg, bg_image = obtener_fondo(bloque, offset_x, offset_y, anchura, altura)
     draw(ventana, bg, bg_image)
 
     if dicc_cartas["abel"]:
@@ -189,12 +200,11 @@ while True:
         ventana.blit(xp.image, (xp.rect.x, xp.rect.y))
 
     enemigo_cerca = rango_minimo_enemigos(grupo_enemigos, jugador)
-
     grupo_xp.update(ventana, jugador, grupo_vidas)
     grupo_vidas.update(grupo_vidas, jugador, dicc_cartas)
     grupo_collecionables.update(ventana, jugador, grupo_vidas, dicc_cartas)
     grupo_paredes.update(ventana, jugador, grupo_vidas)
-    grupo_proyectiles.update(ventana, jugador, grupo_proyectiles, que_hace, enemigo_cerca, dicc_cartas, grupo_enemigos)
+    grupo_proyectiles.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
     grupo_enemigos.update(diccionario_slime, ventana, grupo_proyectiles, grupo_xp, subir_nivel, jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y)
     grupo_jugador.update(lista_sprites, ventana, que_hace,  lista_grupos, movimiento_prota, dicc_cartas)
     grupo_arboles.update(ventana, grupo_proyectiles, grupo_collecionables, dicc_cartas)
@@ -202,12 +212,15 @@ while True:
 
     movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
     tiempo_real = pygame.time.get_ticks()
+
     if jugador.vidas <= 0 and inmortalidad != True:
         with open(path_completo, "w") as file:   
             contenido_actual.append(subir_nivel[1])
             json.dump(contenido_actual, file)
-        menu_muerte(ventana, subir_nivel)
+            
+        menu_muerte(ventana, subir_nivel, dicc_rect_img, dicc_sonidos)
         cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
+        
         dicc_cartas = {"telepatia": False, "veinte_veinte": False, "abel": False,
                         "biblia": False, "cerebro": False, "cuchillo": False,
                         "glass_cannon": False, "lucky_foot": False, "midas": False,

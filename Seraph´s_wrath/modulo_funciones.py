@@ -1,8 +1,13 @@
 
-from config import *
 import random, math
 import sys
 from pygame import mixer
+import pygame
+
+def crear_rectango_imagen(dir_imagen, pos_x, pos_y, medidas ):
+    imagen = pygame.transform.scale(pygame.image.load(dir_imagen), medidas)
+    rect = imagen.get_rect(centerx = (pos_x), centery = (pos_y))
+    return imagen, rect
 
 def mostrar_texto(screen: pygame.surface, tam: float, texto: str, 
                 coordenadas: tuple, color = ((255,255,255)), color_fondo = ((0,0,0))):
@@ -16,14 +21,14 @@ def mostrar_texto(screen: pygame.surface, tam: float, texto: str,
         color (tuple, optional): El color del texto. Defaults to Colores.BLANCO.
         color_fondo (tuple, optional): El color de fondo del texto. Defaults to None.
     """
-    fuente = pygame.font.SysFont(None, tam)
-    texto_mostrar = fuente.render(f"{texto}", True, color, color_fondo)
+    fuente = pygame.font.SysFont("Snap ITC", tam)
+    texto_mostrar = fuente.render(f"{texto}", True, color, False)
     rect_texto_mostrar = texto_mostrar.get_rect()
     rect_texto_mostrar.center = (coordenadas)
 
     screen.blit(texto_mostrar, rect_texto_mostrar)
 
-def obtener_fondo(tile: str, offset_x: float, offset_y: float):
+def obtener_fondo(tile: str, offset_x: float, offset_y: float, anchura: float, altura: float):
     """Crea coordenadas de filas y columnas,
     tamaños y alturas de una imagen,
     mueve las coordenadas con el jugador
@@ -99,7 +104,7 @@ def cargar_carta(dir_memoria: str, lista: list, coordenadas: tuple):
     lista.append(carta)
     lista.append(carta_rect)
 
-def cartas_usuario(ventana, lista_al, diccionario_cartas): 
+def cartas_usuario(ventana, lista_al, diccionario_cartas, cargar_cartas, anchura, altura): 
     """Imprime imagenes en pantalla,
     devuelve la imagen seleccionada y la elimina de un diccionario
 
@@ -114,7 +119,7 @@ def cartas_usuario(ventana, lista_al, diccionario_cartas):
     func = True
     diccionario_cartas = {"carta_0": [], "carta_1": [], "carta_2": []}
     lista_al = []
-    cartas_random(lista_al, diccionario_cartas)
+    cartas_random(lista_al, diccionario_cartas, cargar_cartas, anchura, altura)
 
     while func:
         for evento in pygame.event.get():
@@ -148,7 +153,7 @@ def cartas_usuario(ventana, lista_al, diccionario_cartas):
 
     return carta_elegida
 
-def cartas_random(lista_al, diccionario_cartas):
+def cartas_random(lista_al, diccionario_cartas, cargar_cartas, anchura, altura):
     """Elige 3 claves diferentes de un diccionario
     aleatoriamente y las agrega a una lista
 
@@ -159,7 +164,6 @@ def cartas_random(lista_al, diccionario_cartas):
     numeros_posibles = []
 
     claves = list(cargar_cartas.keys())
-    valor_max = len(claves)
 
     for numero in range(len(claves)):
         numero += 1
@@ -205,13 +209,12 @@ def cartas_random(lista_al, diccionario_cartas):
     cargar_carta(cargar_cartas[lista_al[2]], diccionario_cartas["carta_2"], [anchura - 150, altura // 2])
 
 
-
-# Función para dibujar la imagen en la pantalla
 def dibujar_rectangulo(ventana, imagen, rectangulo):
     ventana.blit(imagen, rectangulo)
 
 
-def crear_bala_fuego(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos):
+def crear_bala_fuego(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, 
+                    grupo_enemigos, dicc_cartas, que_hace):
     """Crea una bala cada x segundos, y la agrega a un grupo de sprites,
     verifica e altera la bala si tiene que adquirir comportamientos diferentes
 
@@ -244,7 +247,8 @@ def crear_bala_fuego(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, juga
         grupo_proyectiles.add(bala)
     return ultima_bala_fuego
 
-def crear_bala_fuego_inversa(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos):
+def crear_bala_fuego_inversa(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, 
+                            grupo_enemigos, dicc_cartas, que_hace):
         if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
             ultima_bala_fuego = tiempo_actual
             if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
@@ -261,7 +265,8 @@ def crear_bala_fuego_inversa(tiempo_actual, ultima_bala_fuego, cooldown_bala_fue
             
             grupo_proyectiles.add(bala)
 
-def crear_bala_fuego_inversa_2(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos):
+def crear_bala_fuego_inversa_2(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos,
+                            dicc_cartas, que_hace):
         if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
             ultima_bala_fuego = tiempo_actual
             if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
@@ -280,18 +285,19 @@ def crear_bala_fuego_inversa_2(tiempo_actual, ultima_bala_fuego, cooldown_bala_f
             grupo_proyectiles.add(bala2)
 
 
-def crear_cuchillo(tiempo_actual, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles):
+def crear_cuchillo(tiempo_actual, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles, dicc_sonidos):
         if tiempo_actual - ultimo_cuchillo > cooldown_cuchillo:
             ultimo_cuchillo = tiempo_actual
             cuchillo = Cuchillo(r"Seraph´s_wrath\assets\armas\tramontina_abajo.png", (60, 90), jugador.rect.centerx, jugador.rect.top, 1, 4)
             grupo_proyectiles.add(cuchillo)
-            cuchillo_sonido.play()
+            dicc_sonidos["cuchillo"].play()
         return ultimo_cuchillo
 
-def crear_cuchillo_2(tiempo_actual, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles):
+def crear_cuchillo_2(tiempo_actual, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles, dicc_sonidos):
         if tiempo_actual - ultimo_cuchillo > cooldown_cuchillo:
             ultimo_cuchillo = tiempo_actual
             cuchillo = Cuchillo(r"Seraph´s_wrath\assets\armas\tramontina_abajo.png", (60, 90), jugador.rect.centerx + 20, jugador.rect.top, 1, 4)
+            dicc_sonidos["cuchillo"].play()
             grupo_proyectiles.add(cuchillo)
 
 def rango_jugador(jugador):
@@ -336,7 +342,6 @@ def rango_minimo_enemigos(grupo_enemigos, jugador):
     return enemigo_mas_cercano
 
 
-
 def crear_slime(pos_x, pos_y, Enemigo, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_actual):
     if tiempo_actual - ultimo_slime > cooldown_slime:
         ultimo_slime = tiempo_actual
@@ -347,7 +352,7 @@ def crear_slime(pos_x, pos_y, Enemigo, grupo_enemigos, ultimo_slime, cooldown_sl
 
 
 
-def pausa(ventana, rect_pausa, offset_x, offset_y):
+def pausa(ventana, rect_pausa, imagen_pausa):
     func = True
     while func:
         for evento in pygame.event.get():
@@ -361,7 +366,7 @@ def pausa(ventana, rect_pausa, offset_x, offset_y):
         ventana.blit(imagen_pausa, (rect_pausa.x, rect_pausa.y))
         pygame.display.update()
 
-def menu_principal(ventana, inmortalidad, contenido_actual):
+def menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchura, altura, dicc_sonidos):
     func = True
     y = 100
     vueltas = len(contenido_actual)
@@ -373,29 +378,30 @@ def menu_principal(ventana, inmortalidad, contenido_actual):
 
             if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
                 click_pos = pygame.mouse.get_pos()
-                if rect_empezar.collidepoint(click_pos):
+                if dicc_rect_img["empezar"][1].collidepoint(click_pos):
                     func = False
-                elif rect_opciones.collidepoint(click_pos):
-                    inmortalidad = opciones(ventana, inmortalidad)
-                elif rect_ranking.collidepoint(click_pos):
-                    ranking(ventana, contenido_actual)
-                elif rect_salir.collidepoint(click_pos):
+                elif dicc_rect_img["opciones"][1].collidepoint(click_pos):
+                    inmortalidad = opciones(ventana, inmortalidad, dicc_rect_img, dicc_sonidos)
+                elif dicc_rect_img["ranking"][1].collidepoint(click_pos):
+                    ranking(ventana, contenido_actual, dicc_rect_img, anchura, altura)
+                elif dicc_rect_img["salir"][1].collidepoint(click_pos):
                     pygame.quit()
                     sys.exit()
 
-        ventana.blit(imagen_jungla, (rect_jungla.x, rect_jungla.y))
-        ventana.blit(imagen_empezar, (rect_empezar.x, rect_empezar.y))
-        ventana.blit(imagen_opciones, (rect_opciones.x, rect_opciones.y))
-        ventana.blit(imagen_ranking, (rect_ranking.x, rect_ranking.y))
-        ventana.blit(imagen_salir, (rect_salir.x, rect_salir.y))
+        ventana.blit(dicc_rect_img["jungla"][0], (dicc_rect_img["jungla"][1].x, dicc_rect_img["jungla"][1].y))
+        ventana.blit(dicc_rect_img["menu"][0], (dicc_rect_img["menu"][1].x, dicc_rect_img["menu"][1].y))
+        ventana.blit(dicc_rect_img["empezar"][0], (dicc_rect_img["empezar"][1].x, dicc_rect_img["empezar"][1].y))
+        ventana.blit(dicc_rect_img["opciones"][0], (dicc_rect_img["opciones"][1].x, dicc_rect_img["opciones"][1].y))
+        ventana.blit(dicc_rect_img["ranking"][0], (dicc_rect_img["ranking"][1].x, dicc_rect_img["ranking"][1].y))
+        ventana.blit(dicc_rect_img["salir"][0], (dicc_rect_img["salir"][1].x, dicc_rect_img["salir"][1].y))
         pygame.display.update()
     return inmortalidad
 
-def ranking(ventana, contenido_actual):
+def ranking(ventana, contenido_actual, dicc_rect_img, anchura, altura):
     func = True
-    contenido_actual = sorted(contenido_actual, reverse =True)
+    contenido_actual = sorted(contenido_actual, reverse = True)
     while func:
-        y = 20
+        y = 50
 
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -405,24 +411,25 @@ def ranking(ventana, contenido_actual):
             if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
                 click_pos = pygame.mouse.get_pos()
 
-                if rect_atras.collidepoint(click_pos):
+                if dicc_rect_img["atras"][1].collidepoint(click_pos):
                         func = False
 
-        ventana.blit(imagen_fama, (rect_fama.x, rect_fama.y))
-        ventana.blit(imagen_atras, (rect_atras.x, rect_atras.y))
+        ventana.blit(dicc_rect_img["jungla"][0], (dicc_rect_img["jungla"][1].x, dicc_rect_img["jungla"][1].y))
+        ventana.blit(dicc_rect_img["atras"][0], (dicc_rect_img["atras"][1].x, dicc_rect_img["atras"][1].y))
 
         for nivel in contenido_actual:
-            mostrar_texto(ventana, 50, f"Nivel alcanzado: = {nivel}", ((anchura // 2, y)))
-            y += 50
+            if y <= altura - 70:
+                mostrar_texto(ventana, 50, f"Nivel alcanzado: = {nivel}", ((anchura // 2, y)))
+                y += 70
 
         pygame.display.flip()
 
 
-def opciones(ventana, inmortalidad):
+def opciones(ventana, inmortalidad, dicc_rect_img, dicc_sonidos):
     tiempo_actual = pygame.time.get_ticks()
-    imagen_musica, rect_musica = imagen_musica_on, rect_musica_on 
-    imagen_efectos, rect_efectos = imagen_efectos_on, rect_efectos_on
-    imagen_inmortalidad, rect_inmortalidad = imagen_inmortalidad_off, rect_inmortalidad_off
+    imagen_musica, rect_musica = dicc_rect_img["musica"]["on"][0], dicc_rect_img["musica"]["on"][1] 
+    imagen_efectos, rect_efectos = dicc_rect_img["efectos"]["on"][0], dicc_rect_img["efectos"]["on"][1]
+    imagen_inmortalidad, rect_inmortalidad = dicc_rect_img["inmortalidad"]["off"][0], dicc_rect_img["inmortalidad"]["off"][1]
     func = True
     musica = True
     efectos = True
@@ -439,78 +446,78 @@ def opciones(ventana, inmortalidad):
                 ultimo_click = tiempo_actual
                 click_pos = pygame.mouse.get_pos()
 
-                if rect_musica_on.collidepoint(click_pos) and musica == True:
-                    imagen_musica = imagen_musica_off
-                    rect_musica = rect_musica_off
+                if dicc_rect_img["musica"]["on"][1].collidepoint(click_pos) and musica == True:
+                    imagen_musica = dicc_rect_img["musica"]["off"][0]
+                    rect_musica = dicc_rect_img["musica"]["off"][1]
                     musica = False
                     pygame.mixer.music.pause()
-                elif rect_musica_off.collidepoint(click_pos) and musica == False:
-                    imagen_musica = imagen_musica_on
-                    rect_musica = rect_musica_on
+                elif dicc_rect_img["musica"]["off"][1].collidepoint(click_pos) and musica == False:
+                    imagen_musica = dicc_rect_img["musica"]["on"][0]
+                    rect_musica = dicc_rect_img["musica"]["on"][1]
                     musica = True
                     pygame.mixer.music.unpause()    
 
 
-                if rect_efectos_on.collidepoint(click_pos) and efectos == True:
-                    imagen_efectos = imagen_efectos_off
-                    rect_efectos = rect_efectos_off
+                if dicc_rect_img["efectos"]["on"][1].collidepoint(click_pos) and efectos == True:
+                    imagen_efectos = dicc_rect_img["efectos"]["off"][0]
+                    rect_efectos = dicc_rect_img["efectos"]["off"][1]
                     efectos = False
-                    cuchillo_sonido.set_volume(0)
-                    explosion_sonido.set_volume(0)
-                    muerte_sonido.set_volume(0)
-                elif rect_efectos_off.collidepoint(click_pos) and efectos == False:
-                    imagen_efectos = imagen_efectos_on
-                    rect_efectos = rect_efectos_on
+                    dicc_sonidos["cuchillo"].set_volume(0)
+                    dicc_sonidos["explosion"].set_volume(0)
+                    dicc_sonidos["muerte"].set_volume(0)
+                elif dicc_rect_img["efectos"]["off"][1].collidepoint(click_pos) and efectos == False:
+                    imagen_efectos = dicc_rect_img["efectos"]["on"][0]
+                    rect_efectos = dicc_rect_img["efectos"]["on"][1]
                     efectos = True
-                    cuchillo_sonido.set_volume(0.1)
-                    explosion_sonido.set_volume(0.1)
-                    muerte_sonido.set_volume(0.1)
-
-                if rect_inmortalidad_off.collidepoint(click_pos) and inmortalidad == False:
-                    imagen_inmortalidad = imagen_inmortalidad_on
-                    rect_inmortalidad = rect_inmortalidad_on
+                    dicc_sonidos["cuchillo"].set_volume(0.1)
+                    dicc_sonidos["explosion"].set_volume(0.1)
+                    dicc_sonidos["muerte"].set_volume(0.1)
+                if dicc_rect_img["inmortalidad"]["off"][1].collidepoint(click_pos) and inmortalidad == False:
+                    imagen_inmortalidad = dicc_rect_img["inmortalidad"]["on"][0]
+                    rect_inmortalidad = dicc_rect_img["inmortalidad"]["on"][1]
                     inmortalidad = True
-                elif rect_inmortalidad_on.collidepoint(click_pos) and inmortalidad == True:
-                    imagen_inmortalidad = imagen_inmortalidad_off
-                    rect_inmortalidad = rect_inmortalidad_off
+                elif dicc_rect_img["inmortalidad"]["on"][1].collidepoint(click_pos) and inmortalidad == True:
+                    imagen_inmortalidad = dicc_rect_img["inmortalidad"]["off"][0]
+                    rect_inmortalidad = dicc_rect_img["inmortalidad"]["off"][1]
                     inmortalidad = False
 
-                if rect_atras.collidepoint(click_pos):
+                if dicc_rect_img["atras"][1].collidepoint(click_pos):
                     func = False
 
         tiempo_actual = pygame.time.get_ticks()
-        ventana.blit(imagen_fondo_opciones, (rect_fondo_opciones.x, rect_fondo_opciones.y))
+        ventana.blit(dicc_rect_img["fondo_opciones"][0], (dicc_rect_img["fondo_opciones"][1].x, dicc_rect_img["fondo_opciones"][1].y))
         ventana.blit(imagen_efectos, (rect_efectos.x, rect_efectos.y))
         ventana.blit(imagen_inmortalidad, (rect_inmortalidad.x, rect_inmortalidad.y))
         ventana.blit(imagen_musica, (rect_musica.x, rect_musica.y))
-        ventana.blit(imagen_atras, (rect_atras.x, rect_atras.y))
+        ventana.blit(dicc_rect_img["atras"][0], (dicc_rect_img["atras"][1].x, dicc_rect_img["atras"][1].y))
         pygame.display.update()
 
     return inmortalidad
 
 
-def func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute):
+def func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute, dicc_sonidos):
         if tiempo_real - ultimo_mute > cooldown_mute:
             ultimo_mute = tiempo_real
             if mute:
                 pygame.mixer.music.unpause()    
-                cuchillo_sonido.set_volume(0.1)
-                explosion_sonido.set_volume(0.1)
-                muerte_sonido.set_volume(0.1)
+                dicc_sonidos["cuchillo"].set_volume(0.1)
+                dicc_sonidos["explosion"].set_volume(0.1)
+                dicc_sonidos["muerte"].set_volume(0.1)
                 mute = False
             else:
                 mute = True
                 pygame.mixer.music.pause()
-                cuchillo_sonido.set_volume(0)
-                explosion_sonido.set_volume(0)
-                muerte_sonido.set_volume(0)
+                dicc_sonidos["cuchillo"].set_volume(0)
+                dicc_sonidos["explosion"].set_volume(0)
+                dicc_sonidos["muerte"].set_volume(0)
+
         return ultimo_mute, mute
 
-def menu_muerte(ventana, nivel):
+def menu_muerte(ventana, nivel, dicc_rect_img, dicc_sonidos):
     func = True
     inmortalidad = False
     pygame.mixer.music.pause()
-    muerte_sonido.play()
+    dicc_sonidos["muerte"].play()
 
     while func:
         for evento in pygame.event.get():
@@ -520,13 +527,13 @@ def menu_muerte(ventana, nivel):
 
             if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
                 click_pos = pygame.mouse.get_pos()
-                if rect_salir.collidepoint(click_pos):
+                if dicc_rect_img["salir"][1].collidepoint(click_pos):
                     pygame.quit()
                     sys.exit()
 
-        ventana.blit(imagen_muerte, (rect_muerte.x, rect_muerte.y))
-        ventana.blit(imagen_salir, (rect_salir.x, rect_salir.y))
-        mostrar_texto(ventana, 80, f"Llegaste hasta el nivel: {nivel[1]}", ((500,200)))
+        ventana.blit(dicc_rect_img["muerte"][0], (dicc_rect_img["muerte"][1].x, dicc_rect_img["muerte"][1].y))
+        ventana.blit(dicc_rect_img["salir"][0], (dicc_rect_img["salir"][1].x, dicc_rect_img["salir"][1].y))
+        mostrar_texto(ventana, 50, f"Llegaste hasta el nivel: {nivel[1]}", ((500,200)))
 
         pygame.display.update()
 

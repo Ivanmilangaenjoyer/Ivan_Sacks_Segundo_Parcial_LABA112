@@ -58,22 +58,22 @@ class Jugador(pygame.sprite.Sprite):
     def movimiento(self, movimiento_prota):
         if not self.colision_arriba:
             if movimiento_prota["arriba"]:
-                self.velocidad_y = -3
+                self.velocidad_y = -4
                 self.rect.y += self.velocidad_y
 
         if not self.colision_dercha:
             if movimiento_prota["derecha"]:
-                self.velocidad_x = 3
+                self.velocidad_x = 4
                 self.rect.x += self.velocidad_x
 
         if not self.colision_izquierda:
             if movimiento_prota["izquierda"]:
-                self.velocidad_x = -3
+                self.velocidad_x = -4
                 self.rect.x += self.velocidad_x
 
         if not self.colision_piso:
             if movimiento_prota["abajo"]:
-                self.velocidad_y = 3
+                self.velocidad_y = 4
                 self.rect.y += self.velocidad_y
 
 

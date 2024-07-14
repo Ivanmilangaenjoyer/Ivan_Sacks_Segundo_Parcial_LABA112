@@ -50,7 +50,7 @@ class Bala(pygame.sprite.Sprite):
         self.diccionario_rectangulos["bottom"] = pygame.Rect(self.rect.left + 10, self.rect.bottom - 10, self.rect.width - 15, 5)
 
 
-    def explosion_bala(self):
+    def explosion_bala(self, explosion):
         if self.indice < (len(explosion)-1):
             if self.tiempo_actual - self.ultima_animacion > self.cooldown_animacion:
                 self.indice += 1
@@ -79,7 +79,7 @@ class Bala(pygame.sprite.Sprite):
         if enemigo.rect.centery > self.rect.centery:
             self.rect.centery += 5
 
-    def update(self, pantalla, jugador, grupo_proyectiles, que_hace, enemigo_cerca, dicc_cartas, grupo_enemigos):
+    def update(self, enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos):
         if dicc_cartas["glass_cannon"] and self.bandera_cannon:
             self.daño = self.daño * 2
             self.bandera_cannon = False
@@ -102,18 +102,10 @@ class Bala(pygame.sprite.Sprite):
         self.tiempo_actual = pygame.time.get_ticks()
 
         if self.anim_muerte:
-            self.explosion_bala()
+            self.explosion_bala(explosion)
         if self.muerte:
-            explosion_sonido.play()
+            dicc_sonidos["explosion"].play()
             self.kill()
-
-        
-
-        # pygame.draw.rect(pantalla, (0,255,255), self.diccionario_rectangulos["main"])
-        # pygame.draw.rect(pantalla, (255,255,255), self.diccionario_rectangulos["left"])
-        # pygame.draw.rect(pantalla, (0,255,255), self.diccionario_rectangulos["bottom"])
-        # pygame.draw.rect(pantalla, (0,0,255), self.diccionario_rectangulos["top"])
-        # pygame.draw.rect(pantalla, (0,0,255), self.diccionario_rectangulos["right"])
 
 
 class Cuchillo(pygame.sprite.Sprite):
@@ -135,6 +127,7 @@ class Cuchillo(pygame.sprite.Sprite):
         self.daño = 1
         self.bandera_cannon = True
         self.bandera_suicide_king = True
+
     def cargar_partes_cuchillo(self):
         self.diccionario_rectangulos["main"] = self.rect
 
@@ -165,7 +158,7 @@ class Cuchillo(pygame.sprite.Sprite):
         self.rect.y -= self.velocidad_y
 
 
-    def update(self, pantalla, jugador, grupo_proyectiles, que_hace, grupo_enemigo, dicc_cartas, enemigo):
+    def update(self, enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos):
         if dicc_cartas["glass_cannon"] and self.bandera_cannon:
             self.daño = self.daño * 2
             self.bandera_cannon = False
