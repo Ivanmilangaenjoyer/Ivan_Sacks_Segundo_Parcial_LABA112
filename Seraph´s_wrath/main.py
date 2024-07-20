@@ -139,15 +139,15 @@ while True:
         bandera_telepatia = False
 
     if dicc_cartas["cerebro"]:
-        crear_bala_fuego_inversa_2(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos,
-                                dicc_cartas, que_hace)
+        crear_bala_fuego_inversa_2(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles,
+                                dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada)
 
     if dicc_cartas["biblia"]:
         crear_bala_fuego_inversa(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, 
-                                grupo_enemigos, dicc_cartas, que_hace)
+                                dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada)
 
-    ultima_bala_fuego = crear_bala_fuego(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos,
-                                        dicc_cartas, que_hace)
+    ultima_bala_fuego = crear_bala_fuego(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles,
+                                        dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada)
     
     if dicc_cartas["sacrificial_dagger"] and dicc_cartas["cuchillo"]:
         crear_cuchillo_2(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles
@@ -178,6 +178,9 @@ while True:
     for proyectil in grupo_proyectiles:
         ventana.blit(proyectil.image, (proyectil.rect.x - offset_x, proyectil.rect.y - offset_y))
 
+    for proyectil_tp in grupo_proyectiles_tp:
+        ventana.blit(proyectil_tp.image, (proyectil_tp.rect.x - offset_x, proyectil_tp.rect.y - offset_y))
+
     for pared in grupo_paredes:
         ventana.blit(pared.image, (pared.rect.x - offset_x, pared.rect.y - offset_y))
 
@@ -205,13 +208,16 @@ while True:
     grupo_collecionables.update(ventana, jugador, grupo_vidas, dicc_cartas)
     grupo_paredes.update(ventana, jugador, grupo_vidas)
     grupo_proyectiles.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
-    grupo_enemigos.update(diccionario_slime, ventana, grupo_proyectiles, grupo_xp, subir_nivel, jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y)
+    grupo_proyectiles_tp.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
+    grupo_enemigos.update(diccionario_slime, ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, jugador, grupo_enemigos, 
+                        dicc_cartas, offset_x, offset_y)
     grupo_jugador.update(lista_sprites, ventana, que_hace,  lista_grupos, movimiento_prota, dicc_cartas)
-    grupo_arboles.update(ventana, grupo_proyectiles, grupo_collecionables, dicc_cartas)
+    grupo_arboles.update(ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_collecionables, dicc_cartas)
 
 
     movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
     tiempo_real = pygame.time.get_ticks()
+
 
     if jugador.vidas <= 0 and inmortalidad != True:
         with open(path_completo, "w") as file:   
@@ -232,27 +238,29 @@ while True:
                 "steam_final": r"Seraph´s_wrath\assets\cartas\steam_final.jpg", "suicide_king": r"Seraph´s_wrath\assets\cartas\suicide_king.jpg", "telepatia": r"Seraph´s_wrath\assets\cartas\telepatia.jpg", "xray": r"Seraph´s_wrath\assets\cartas\xray.jpg"}
 
         jugador.rect.centerx = anchura // 2
-        jugador.rect.centery = altura // 2
+        jugador.rect.centery = altura // 2 
+        jugador_colision = False
         carta_nivel = None
+        bandera_telepatia = True
+        bandera_veinte_veinte = True
+        mute = False
+        inmortalidad = False
         nivel_anterior = 0
         offset_x = 0
         offset_y = 0
         cooldown_bala_fuego = 1500
+        cooldown_slime = 2700
         cooldown_cuchillo = 2000
         ultima_bala_fuego = 0
-        que_hace = ["nada", "derecha"]
         movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
         jugador.vidas = 4
         cargar_linea_objetos(Vidas, r"Seraph´s_wrath\assets\items\muertos\Transperent\Icon1.png",32, 20, 32, 32, 3, grupo_vidas, {"x": 50, "y": 0})
-
-
 
         with open(path_completo, 'r') as archivo:
             contenido_actual = json.load(archivo)
 
         slime = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 400, 100, 5)
         grupo_enemigos.add(slime)
-
 
         subir_nivel = [0, 0]
 

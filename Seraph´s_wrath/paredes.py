@@ -104,7 +104,7 @@ class Arbol(Objetos):
         self.diccionario_rectangulos["left"] = pygame.Rect(self.rect.left, self.rect.top, 30, self.rect.height)
         self.diccionario_rectangulos["bottom"] = pygame.Rect(self.rect.left, self.rect.bottom - 15, self.rect.width, 20)
 
-    def update(self, pantalla, grupo, grupo_coleccionables, dicc_cartas):
+    def update(self, pantalla, grupo_proyectiles, grupo_proyectiles_tp, grupo_coleccionables, dicc_cartas):
         if dicc_cartas["lucky_foot"] and self.bandera_suerte:
             self.suerte -= 2
             self.bandera_suerte = False
@@ -114,16 +114,17 @@ class Arbol(Objetos):
         self.colision_izquierda = False
         self.colision_arriba = False
 
-        self.colisiones(grupo, (("bottom", "top")), grupo_coleccionables)
-        self.colisiones(grupo, (("top", "bottom")), grupo_coleccionables)
-        self.colisiones(grupo, (("right", "left")), grupo_coleccionables)
-        self.colisiones(grupo, (("left", "right")), grupo_coleccionables)
+        self.colisiones(grupo_proyectiles, (("bottom", "top")), grupo_coleccionables)
+        self.colisiones(grupo_proyectiles, (("top", "bottom")), grupo_coleccionables)
+        self.colisiones(grupo_proyectiles, (("right", "left")), grupo_coleccionables)
+        self.colisiones(grupo_proyectiles, (("left", "right")), grupo_coleccionables)
 
-        # pygame.draw.rect(pantalla, (0,255,255), self.diccionario_rectangulos["main"])
-        # pygame.draw.rect(pantalla, (255,255,255), self.diccionario_rectangulos["left"])
-        # pygame.draw.rect(pantalla, (255,255,255), self.diccionario_rectangulos["right"])
-        # pygame.draw.rect(pantalla, (0,255,255), self.diccionario_rectangulos["bottom"])
-        # pygame.draw.rect(pantalla, (0,0,255), self.diccionario_rectangulos["top"])
+        self.colisiones(grupo_proyectiles_tp, (("bottom", "top")), grupo_coleccionables)
+        self.colisiones(grupo_proyectiles_tp, (("top", "bottom")), grupo_coleccionables)
+        self.colisiones(grupo_proyectiles_tp, (("right", "left")), grupo_coleccionables)
+        self.colisiones(grupo_proyectiles_tp, (("left", "right")), grupo_coleccionables)
+
+
 
 
 class Xp(Objetos):

@@ -81,18 +81,19 @@ imagen_fama, rect_fama = crear_rectango_imagen(r"Seraph´s_wrath\assets\fondos\S
 
 imagen_muerte, rect_muerte = crear_rectango_imagen(r"Seraph´s_wrath\assets\fondos\muerte.png", anchura // 2, altura // 2, ((anchura, altura)))
 
-imagen_reintentar, rect_reintentar = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\reintentar.png", anchura // 2, 200, ((400, 100)))
+imagen_reintentar, rect_reintentar = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\reintentar.png", anchura // 2, 200, ((300, 60)))
+rect_reintentar = imagen_reintentar.get_rect(centerx = (anchura // 2), centery = (310))
 
 imagen_atras, rect_atras = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\atras.png", 50, 50, ((100, 100)))
 
 imagen_musica_on, rect_musica_on = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\musica_on.png", anchura // 2, 100, ((400, 100)))
-imagen_musica_off, rect_musica_off = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\musica_off.png", anchura // 2, 100, ((400, 100)))
+imagen_musica_off, rect_musica_off = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\musica_off.png", anchura // 2, 100, ((400, 85)))
 
 
 imagen_inmortalidad_on, rect_inmortalidad_on = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\inmortalidad_on.png", anchura // 2, 250, ((400, 100)))
-imagen_inmortalidad_off, rect_inmortalidad_off = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\inmortalidad_off.png", anchura // 2, 250, ((400, 100)))
+imagen_inmortalidad_off, rect_inmortalidad_off = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\inmortalidad_off.png", anchura // 2, 250, ((400, 85)))
 
-imagen_efectos_off, rect_efectos_off = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\efectos_off.png", anchura // 2, 400, ((400, 100)))
+imagen_efectos_off, rect_efectos_off = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\efectos_off.png", anchura // 2, 400, ((400, 85)))
 imagen_efectos_on, rect_efectos_on = crear_rectango_imagen(r"Seraph´s_wrath\assets\botones\efectos_on.png", anchura // 2, 400, ((400, 100)))
 
 imagen_fondo_opciones, rect_fondo_opciones = crear_rectango_imagen(r"Seraph´s_wrath\assets\fondos\templo.jpg", anchura // 2, altura // 2, ((anchura, altura)))

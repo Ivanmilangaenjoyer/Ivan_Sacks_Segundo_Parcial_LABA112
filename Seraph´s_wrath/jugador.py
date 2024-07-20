@@ -242,7 +242,7 @@ class Enemigo(Jugador):
 
 
 
-    def update(self, diccionario_sprites, pantalla, grupo_proyectiles, grupo_xp, subir_nivel, jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y):
+    def update(self, diccionario_sprites, pantalla, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y):
         self.colision_piso = False
         self.colision_arriba = False
         self.colision_derecha = False
@@ -278,17 +278,17 @@ class Enemigo(Jugador):
             self.bandera_steam = False
             self.xp = self.xp * 1.2
 
-
-                
-        # self.colisiones_proyectiles(grupo_proyectiles, (("bottom", "top")))
-        # self.colisiones_proyectiles(grupo_proyectiles, (("top", "bottom")))
-        # self.colisiones_proyectiles(grupo_proyectiles, (("right", "left")))
-        # self.colisiones_proyectiles(grupo_proyectiles, (("left", "right")))
-
         for lado_0 in self.lista_colisiones:
             for lado_1 in self.lista_colisiones:
                 if self.colision:
                     self.colisiones_proyectiles(grupo_proyectiles, ((lado_0, lado_1)))
+
+        self.colision = True
+
+        for lado_0 in self.lista_colisiones:
+            for lado_1 in self.lista_colisiones:
+                if self.colision:
+                    self.colisiones_proyectiles(grupo_proyectiles_tp, ((lado_0, lado_1)))
 
         self.colision = True
 

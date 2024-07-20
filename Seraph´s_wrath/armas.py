@@ -62,12 +62,36 @@ class Bala(pygame.sprite.Sprite):
             self.indice = 0
             self.muerte = True
 
-
     def limpiar_proyectiles(self):
         if self.rect.centerx > 1540 or self.rect.centerx < 0:
             self.kill()
         if self.rect.centery > 1250 or self.rect.centery < 0:
             self.kill()
+
+    def update(self, enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos):
+        if dicc_cartas["glass_cannon"] and self.bandera_cannon:
+            self.daño = self.daño * 2
+            self.bandera_cannon = False
+
+        if dicc_cartas["suicide_king"] and self.suicide_king:
+            self.daño = self.daño * 2
+            self.suicide_king = False
+
+        self.cargar_partes_bala()       
+        self.rect.x += self.velocidad_x
+        self.rect.y += self.velocidad_y
+
+        self.tiempo_actual = pygame.time.get_ticks()
+
+        if self.anim_muerte:
+            self.explosion_bala(explosion)
+        if self.muerte:
+            dicc_sonidos["explosion"].play()
+            self.kill()
+
+class Bala_guiada(Bala):
+    def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad_x, velocidad_y):
+        super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad_x, velocidad_y)
 
     def movimiento_guiado(self, enemigo):
         if enemigo.rect.centerx < self.rect.centerx:
@@ -79,6 +103,9 @@ class Bala(pygame.sprite.Sprite):
         if enemigo.rect.centery > self.rect.centery:
             self.rect.centery += 5
 
+        print(self.rect.x, self.rect.y)
+
+
     def update(self, enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos):
         if dicc_cartas["glass_cannon"] and self.bandera_cannon:
             self.daño = self.daño * 2
@@ -88,16 +115,8 @@ class Bala(pygame.sprite.Sprite):
             self.daño = self.daño * 2
             self.suicide_king = False
 
-        if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
-            self.cargar_partes_bala_guiada()
-        else:
-            self.cargar_partes_bala()       
-
-        if len(grupo_enemigos) != 0 and dicc_cartas["telepatia"]:
-                self.movimiento_guiado(enemigo_cerca)
-        else:
-            self.rect.x += self.velocidad_x
-            self.rect.y += self.velocidad_y
+        self.cargar_partes_bala_guiada()
+        self.movimiento_guiado(enemigo_cerca)
 
         self.tiempo_actual = pygame.time.get_ticks()
 
@@ -106,7 +125,6 @@ class Bala(pygame.sprite.Sprite):
         if self.muerte:
             dicc_sonidos["explosion"].play()
             self.kill()
-
 
 class Cuchillo(pygame.sprite.Sprite):
     def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad_x, velocidad_y):

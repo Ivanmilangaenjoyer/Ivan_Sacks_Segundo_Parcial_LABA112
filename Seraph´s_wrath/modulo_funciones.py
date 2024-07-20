@@ -214,7 +214,7 @@ def dibujar_rectangulo(ventana, imagen, rectangulo):
 
 
 def crear_bala_fuego(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, 
-                    grupo_enemigos, dicc_cartas, que_hace):
+                    dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada):
     """Crea una bala cada x segundos, y la agrega a un grupo de sprites,
     verifica e altera la bala si tiene que adquirir comportamientos diferentes
 
@@ -232,8 +232,8 @@ def crear_bala_fuego(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, juga
     """
     if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
         ultima_bala_fuego = tiempo_actual
-        if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
-            bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx, jugador.rect.centery, 3, 3)
+        if dicc_cartas["telepatia"]:
+            bala_tp = Bala_guiada(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx, jugador.rect.centery, 3, 3)
         else:
             if que_hace[1] == "derecha":
                 bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
@@ -244,15 +244,18 @@ def crear_bala_fuego(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, juga
             elif que_hace[1] == "abajo":
                 bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
         
-        grupo_proyectiles.add(bala)
+        if dicc_cartas["telepatia"]:
+            grupo_proyectiles_tp.add(bala_tp)
+        else:
+            grupo_proyectiles.add(bala)
     return ultima_bala_fuego
 
 def crear_bala_fuego_inversa(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, 
-                            grupo_enemigos, dicc_cartas, que_hace):
+                            dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada):
         if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
             ultima_bala_fuego = tiempo_actual
-            if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
-                bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx - 10, jugador.rect.centery + 10, 3, 3)
+            if dicc_cartas["telepatia"]:
+                bala_tp = Bala_guiada(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx - 10, jugador.rect.centery + 10, 3, 3)
             else:
                 if que_hace[1] == "izquierda":
                     bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
@@ -263,15 +266,19 @@ def crear_bala_fuego_inversa(tiempo_actual, ultima_bala_fuego, cooldown_bala_fue
                 elif que_hace[1] == "arriba":
                     bala = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_abajo.png",(30, 30),jugador.rect.centerx, jugador.rect.centery +30, 0, +5)
             
-            grupo_proyectiles.add(bala)
 
-def crear_bala_fuego_inversa_2(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles, grupo_enemigos,
-                            dicc_cartas, que_hace):
+            if dicc_cartas["telepatia"]:
+                grupo_proyectiles_tp.add(bala_tp)
+            else:
+                grupo_proyectiles.add(bala)
+
+def crear_bala_fuego_inversa_2(tiempo_actual, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles,
+                            dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada):
         if tiempo_actual - ultima_bala_fuego > cooldown_bala_fuego:
             ultima_bala_fuego = tiempo_actual
-            if dicc_cartas["telepatia"] and len(grupo_enemigos) != 0:
-                bala1 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx + 10, jugador.rect.centery + 10, 3, 3)
-                bala2 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx - 10, jugador.rect.centery - 10, 3, 3)
+            if dicc_cartas["telepatia"]:
+                bala1_tp = Bala_guiada(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx + 10, jugador.rect.centery + 10, 3, 3)
+                bala2_tp = Bala_guiada(r"Seraph´s_wrath\assets\armas\bola_fuego_media.png",(40, 40),jugador.rect.centerx - 10, jugador.rect.centery - 10, 3, 3)
 
             else:
                 if que_hace[1] == "izquierda" or que_hace[1] == "derecha":
@@ -281,8 +288,12 @@ def crear_bala_fuego_inversa_2(tiempo_actual, ultima_bala_fuego, cooldown_bala_f
                     bala1 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_derecha.png",(30, 30),jugador.rect.centerx + 30, jugador.rect.centery, 5, 0)
                     bala2 = Bala(r"Seraph´s_wrath\assets\armas\bola_fuego_izq.png",(30, 30),jugador.rect.centerx - 30, jugador.rect.centery, -5, 0)
 
-            grupo_proyectiles.add(bala1)
-            grupo_proyectiles.add(bala2)
+            if dicc_cartas["telepatia"]:
+                grupo_proyectiles_tp.add(bala1_tp)
+                grupo_proyectiles_tp.add(bala2_tp)
+            else:
+                grupo_proyectiles.add(bala1)
+                grupo_proyectiles.add(bala2)
 
 
 def crear_cuchillo(tiempo_actual, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles, dicc_sonidos):
@@ -485,7 +496,7 @@ def opciones(ventana, inmortalidad, dicc_rect_img, dicc_sonidos):
                     func = False
 
         tiempo_actual = pygame.time.get_ticks()
-        ventana.blit(dicc_rect_img["fondo_opciones"][0], (dicc_rect_img["fondo_opciones"][1].x, dicc_rect_img["fondo_opciones"][1].y))
+        ventana.blit(dicc_rect_img["jungla"][0], (dicc_rect_img["jungla"][1].x, dicc_rect_img["jungla"][1].y))
         ventana.blit(imagen_efectos, (rect_efectos.x, rect_efectos.y))
         ventana.blit(imagen_inmortalidad, (rect_inmortalidad.x, rect_inmortalidad.y))
         ventana.blit(imagen_musica, (rect_musica.x, rect_musica.y))
@@ -532,6 +543,7 @@ def menu_muerte(ventana, nivel, dicc_rect_img, dicc_sonidos):
                     sys.exit()
 
         ventana.blit(dicc_rect_img["muerte"][0], (dicc_rect_img["muerte"][1].x, dicc_rect_img["muerte"][1].y))
+        ventana.blit(dicc_rect_img["reintentar"][0], (dicc_rect_img["reintentar"][1].x, dicc_rect_img["reintentar"][1].y))
         ventana.blit(dicc_rect_img["salir"][0], (dicc_rect_img["salir"][1].x, dicc_rect_img["salir"][1].y))
         mostrar_texto(ventana, 50, f"Llegaste hasta el nivel: {nivel[1]}", ((500,200)))
 
