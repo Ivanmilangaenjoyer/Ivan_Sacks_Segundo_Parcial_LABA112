@@ -103,6 +103,9 @@ rect_mute = imagen_mute.get_rect(centerx = (60), centery = (470))
 
 abel_imagen = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\armas\Objeto_Abel.png"), ((30, 30)))
 
+imagen_muerte_menu = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\botones\menu.png"), ((300, 60)))
+rect_muerte_menu = imagen_muerte_menu.get_rect(centerx = (anchura // 2), centery = (210))
+
 imagen_pausa = pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\GUI\Pause menu\pausa.png"), ((300, 300)))
 rect_pausa = imagen_pausa.get_rect(centerx = (anchura // 2), centery = (altura // 2))
 
@@ -133,6 +136,6 @@ dicc_rect_img = {"jungla":[imagen_jungla, rect_jungla], "fama":[imagen_fama, rec
                 "fondo_opciones": [imagen_fondo_opciones, rect_fondo_opciones], "mute":[imagen_mute, rect_mute],
                 "abel":[abel_imagen], "pausa": [imagen_pausa, rect_pausa], "empezar": [imagen_empezar, rect_empezar],
                 "opciones":[imagen_opciones, rect_opciones], "ranking":[imagen_ranking, rect_ranking], "salir":[imagen_salir, rect_salir],
-                "menu": [imagen_menu, rect_menu]}
+                "menu": [imagen_menu, rect_menu], "menu_muerte": [imagen_muerte_menu, rect_muerte_menu]}
 dicc_sonidos = {"explosion": explosion_sonido, "cuchillo": cuchillo_sonido, "muerte": muerte_sonido, "level": level_sonido}
 

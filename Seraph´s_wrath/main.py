@@ -209,29 +209,32 @@ while True:
     grupo_paredes.update(ventana, jugador, grupo_vidas)
     grupo_proyectiles.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
     grupo_proyectiles_tp.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
-    grupo_enemigos.update(diccionario_slime, ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, jugador, grupo_enemigos, 
-                        dicc_cartas, offset_x, offset_y)
     grupo_jugador.update(lista_sprites, ventana, que_hace,  lista_grupos, movimiento_prota, dicc_cartas)
     grupo_arboles.update(ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_collecionables, dicc_cartas)
-
+    grupo_enemigos.update(diccionario_slime, ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, jugador, grupo_enemigos, 
+                    dicc_cartas, offset_x, offset_y)
 
     movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
     tiempo_real = pygame.time.get_ticks()
-
-
+    print(subir_nivel)
     if jugador.vidas <= 0 and inmortalidad != True:
+        print("muerte")
         with open(path_completo, "w") as file:   
             contenido_actual.append(subir_nivel[1])
             json.dump(contenido_actual, file)
             
-        menu_muerte(ventana, subir_nivel, dicc_rect_img, dicc_sonidos)
+        grupo_enemigos.empty()
+        inmortalidad = menu_muerte(ventana, subir_nivel, dicc_rect_img, dicc_sonidos, inmortalidad, contenido_actual, 
+                                anchura, altura)
         cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
-        
+        diccionario_cartas = {"carta_0": [], "carta_1": [], "carta_2": []}
+
         dicc_cartas = {"telepatia": False, "veinte_veinte": False, "abel": False,
                         "biblia": False, "cerebro": False, "cuchillo": False,
                         "glass_cannon": False, "lucky_foot": False, "midas": False,
                         "penny": False, "sacrificial_dagger": False, "steam_final": False,
                         "suicide_king": False, "xray": False}
+        
         cargar_cartas = {"veinte_veinte": r"Seraph´s_wrath\assets\cartas\veinte_veinte.jpg", "abel": r"Seraph´s_wrath\assets\cartas\abel.jpg", "biblia": r"Seraph´s_wrath\assets\cartas\biblia.jpg", 
                 "cerebro": r"Seraph´s_wrath\assets\cartas\cerebro.jpg", "cuchillo": r"Seraph´s_wrath\assets\cartas\cuchillo.jpg", "glass_cannon": r"Seraph´s_wrath\assets\cartas\glass_cannon.jpg",
                 "lucky_foot": r"Seraph´s_wrath\assets\cartas\lucky_foot.jpg", "midas": r"Seraph´s_wrath\assets\cartas\midas.jpg", "penny": r"Seraph´s_wrath\assets\cartas\penny.jpg", "sacrificial_dagger": r"Seraph´s_wrath\assets\cartas\sacrificial_dagger.jpg",
@@ -244,16 +247,18 @@ while True:
         bandera_telepatia = True
         bandera_veinte_veinte = True
         mute = False
-        inmortalidad = False
         nivel_anterior = 0
         offset_x = 0
         offset_y = 0
-        cooldown_bala_fuego = 1500
+        cooldown_bala_fuego = 1500 
+        cantidad_xp = 5
         cooldown_slime = 2700
         cooldown_cuchillo = 2000
         ultima_bala_fuego = 0
         movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
         jugador.vidas = 4
+        
+
         cargar_linea_objetos(Vidas, r"Seraph´s_wrath\assets\items\muertos\Transperent\Icon1.png",32, 20, 32, 32, 3, grupo_vidas, {"x": 50, "y": 0})
 
         with open(path_completo, 'r') as archivo:
@@ -262,9 +267,10 @@ while True:
         slime = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 400, 100, 5)
         grupo_enemigos.add(slime)
 
-        subir_nivel = [0, 0]
+        subir_nivel[0] = 0
+        subir_nivel[1] = 0
 
         tiempo_real = pygame.time.get_ticks()
-
+        pygame.mixer.music.unpause()
 
     pygame.display.flip()

@@ -524,9 +524,8 @@ def func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute, dicc_sonidos):
 
         return ultimo_mute, mute
 
-def menu_muerte(ventana, nivel, dicc_rect_img, dicc_sonidos):
+def menu_muerte(ventana, nivel, dicc_rect_img, dicc_sonidos, inmortalidad, contenido_actual, anchura, altura):
     func = True
-    inmortalidad = False
     pygame.mixer.music.pause()
     dicc_sonidos["muerte"].play()
 
@@ -541,11 +540,17 @@ def menu_muerte(ventana, nivel, dicc_rect_img, dicc_sonidos):
                 if dicc_rect_img["salir"][1].collidepoint(click_pos):
                     pygame.quit()
                     sys.exit()
+                elif dicc_rect_img["reintentar"][1].collidepoint(click_pos):
+                    func = False
+                elif dicc_rect_img["menu_muerte"][1].collidepoint(click_pos):
+                    return menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchura, altura, dicc_sonidos)
 
         ventana.blit(dicc_rect_img["muerte"][0], (dicc_rect_img["muerte"][1].x, dicc_rect_img["muerte"][1].y))
         ventana.blit(dicc_rect_img["reintentar"][0], (dicc_rect_img["reintentar"][1].x, dicc_rect_img["reintentar"][1].y))
         ventana.blit(dicc_rect_img["salir"][0], (dicc_rect_img["salir"][1].x, dicc_rect_img["salir"][1].y))
-        mostrar_texto(ventana, 50, f"Llegaste hasta el nivel: {nivel[1]}", ((500,200)))
+        ventana.blit(dicc_rect_img["menu_muerte"][0], (dicc_rect_img["menu_muerte"][1].x, dicc_rect_img["menu_muerte"][1].y))
+
+        mostrar_texto(ventana, 50, f"Llegaste hasta el nivel: {nivel[1]}", ((500, 100)))
 
         pygame.display.update()
 

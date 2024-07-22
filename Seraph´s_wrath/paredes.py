@@ -124,15 +124,13 @@ class Arbol(Objetos):
         self.colisiones(grupo_proyectiles_tp, (("right", "left")), grupo_coleccionables)
         self.colisiones(grupo_proyectiles_tp, (("left", "right")), grupo_coleccionables)
 
-
-
-
 class Xp(Objetos):
     def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad = 0):
         super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad = 0)
 
 
     def ganar_xp(self, grupo_xp, cantidad_xp, subir_nivel):
+        print(cantidad_xp)
         subir_nivel[0] += cantidad_xp
         xp_pixels = subir_nivel[0] * 9
 
@@ -146,6 +144,7 @@ class Xp(Objetos):
             else:
                 print("Sube de nivel", subir_nivel[1])
                 grupo_xp.empty()
+                xp_pixels = 0
                 cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
                 nuevo_xp = Xp(r"Seraph´s_wrath\assets\GUI\Settings\Bar.png",(9, 10), -5, 495)
                 grupo_xp.add(nuevo_xp)

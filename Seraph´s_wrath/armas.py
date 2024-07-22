@@ -103,9 +103,6 @@ class Bala_guiada(Bala):
         if enemigo.rect.centery > self.rect.centery:
             self.rect.centery += 5
 
-        print(self.rect.x, self.rect.y)
-
-
     def update(self, enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos):
         if dicc_cartas["glass_cannon"] and self.bandera_cannon:
             self.daño = self.daño * 2
