@@ -48,7 +48,7 @@ explosion = [pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\a
             pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\animaciones\Explosion_11.png"), ((96, 96))),
             ]
 
-slime_derecha = [
+slime_azul = [
             pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png"), ((128, 40))),
             pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_1.png"), ((128, 40))),
             pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_2.png"), ((128, 40))),
@@ -58,7 +58,17 @@ slime_derecha = [
             pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_6.png"), ((128, 40))),
             ]
 
-diccionario_slime = {"derecha": slime_derecha}
+slime_verde = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_0.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_1.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_2.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_3.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_4.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_5.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_6.png"), ((128, 40))),
+            ]
+
+diccionarios_slimes = {"azul": slime_azul, "verde": slime_verde}
 lista_sprites = {"nada": personaje_quieto, "derecha": personaje_derecha, "izquierda": personaje_izquierda,
                 "arriba": personaje_derecha, "abajo": personaje_derecha}
 

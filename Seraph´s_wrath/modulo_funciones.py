@@ -353,13 +353,20 @@ def rango_minimo_enemigos(grupo_enemigos, jugador):
     return enemigo_mas_cercano
 
 
-def crear_slime(pos_x, pos_y, Enemigo, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_actual):
+def crear_slime(pos_x, pos_y, Enemigo, SlimeVerde, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_actual, vuelta_slime):
     if tiempo_actual - ultimo_slime > cooldown_slime:
         ultimo_slime = tiempo_actual
-        slime = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), pos_x, pos_y, 5)
-        grupo_enemigos.add(slime)
+        if vuelta_slime > 1:
+            vuelta_slime = 0
+            slime_verde = SlimeVerde(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_0.png", (128, 40), pos_x, pos_y, 5)
+            grupo_enemigos.add(slime_verde)
+            
+        slime_azul = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), pos_x + 10, pos_y + 10, 5)
+        grupo_enemigos.add(slime_azul)
+        vuelta_slime += 1
+
         
-    return ultimo_slime
+    return ultimo_slime, vuelta_slime
 
 
 

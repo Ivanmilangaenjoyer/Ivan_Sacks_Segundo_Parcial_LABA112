@@ -128,7 +128,8 @@ while True:
         cargar_linea_objetos(Arbol, r"Seraph´s_wrath\assets\objetos_entorno\Arboles\fir_tree_4.png", num_x, num_y, 50, 150, 1, grupo_arboles, {"x": 0, "y": 0})
 
     rango_pos_x, rango_pos_y = rango_jugador(jugador)
-    ultimo_slime = crear_slime(rango_pos_x, rango_pos_y, Enemigo, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_real)
+    ultimo_slime, vuelta_slime = crear_slime(rango_pos_x, rango_pos_y, Enemigo, SlimeVerde, grupo_enemigos, ultimo_slime, 
+                                            cooldown_slime, tiempo_real, vuelta_slime)
     
     if dicc_cartas["veinte_veinte"] and bandera_veinte_veinte:
         cooldown_bala_fuego = cooldown_bala_fuego - 500
@@ -211,7 +212,7 @@ while True:
     grupo_proyectiles_tp.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
     grupo_jugador.update(lista_sprites, ventana, que_hace,  lista_grupos, movimiento_prota, dicc_cartas)
     grupo_arboles.update(ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_collecionables, dicc_cartas)
-    grupo_enemigos.update(diccionario_slime, ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, jugador, grupo_enemigos, 
+    grupo_enemigos.update(diccionarios_slimes, ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, jugador, grupo_enemigos, 
                     dicc_cartas, offset_x, offset_y)
 
     movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
