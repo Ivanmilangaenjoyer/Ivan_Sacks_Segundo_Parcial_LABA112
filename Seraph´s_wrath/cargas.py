@@ -68,7 +68,17 @@ slime_verde = [
             pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_6.png"), ((128, 40))),
             ]
 
-diccionarios_slimes = {"azul": slime_azul, "verde": slime_verde}
+slime_rojo = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\run_0.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_2.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_1.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_3.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_4.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_5.png"), ((128, 40))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_6.png"), ((128, 40))),
+            ]
+
+diccionarios_slimes = {"azul": slime_azul, "verde": slime_verde, "rojo": slime_rojo}
 lista_sprites = {"nada": personaje_quieto, "derecha": personaje_derecha, "izquierda": personaje_izquierda,
                 "arriba": personaje_derecha, "abajo": personaje_derecha}
 
