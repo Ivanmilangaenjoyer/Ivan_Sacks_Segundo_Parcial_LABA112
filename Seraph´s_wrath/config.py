@@ -23,7 +23,8 @@ grupo_vidas = pygame.sprite.Group()
 grupo_xp = pygame.sprite.Group()
 
 
-vuelta_slime = 0
+vuelta_slime_verde = 0
+vuelta_slime_rojo = 0
 offset_x = 0
 offset_y = 0
 scroll_area_height = 300

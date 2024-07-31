@@ -71,7 +71,7 @@ while True:
 
     movimiento_personaje(teclas, movimiento_prota, que_hace, lista_sprites)
 
-
+    
     if teclas[K_COMMA]:
         ultimo_xp = grupo_xp.sprites()[-1]
         ultimo_xp.ganar_xp(grupo_xp, 10, subir_nivel)
@@ -104,8 +104,8 @@ while True:
         cargar_linea_objetos(Arbol, r"Seraph´s_wrath\assets\objetos_entorno\Arboles\fir_tree_4.png", num_x, num_y, 50, 150, 1, grupo_arboles, {"x": 0, "y": 0})
 
     rango_pos_x, rango_pos_y = rango_jugador(jugador)
-    ultimo_slime, vuelta_slime = crear_slime(rango_pos_x, rango_pos_y, Enemigo, SlimeVerde, grupo_enemigos, ultimo_slime, 
-                                            cooldown_slime, tiempo_real, vuelta_slime)
+    ultimo_slime, vuelta_slime_verde, vuelta_slime_rojo = crear_slime(rango_pos_x, rango_pos_y, Enemigo, SlimeVerde, SlimeRojo,
+                                    grupo_enemigos, ultimo_slime,   cooldown_slime, tiempo_real, vuelta_slime_verde, vuelta_slime_rojo, nivel_anterior)
     
     if dicc_cartas["veinte_veinte"] and bandera_veinte_veinte:
         cooldown_bala_fuego = cooldown_bala_fuego - 500
@@ -125,7 +125,6 @@ while True:
 
     ultima_bala_fuego = crear_bala_fuego(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles,
                                         dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada)
-    
     
     if dicc_cartas["sacrificial_dagger"] and dicc_cartas["cuchillo"]:
         crear_cuchillo_2(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles
@@ -149,7 +148,6 @@ while True:
     if dicc_cartas["abel"]:
         abel_rect = abel_imagen.get_rect(centerx = jugador.rect.centerx - 50, centery = jugador.rect.centery)
         ventana.blit(abel_imagen, (abel_rect.x - offset_x, abel_rect.y - offset_y))
-
 
 
     blitear_grupo(ventana, grupo_proyectiles, ((offset_x, offset_y)))

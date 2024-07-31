@@ -196,7 +196,7 @@ class BalaSlimeVerde(Bala):
     def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad_x, velocidad_y):
         super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad_x, velocidad_y)
         self.ultimo_daño = 0
-        self.cooldown_daño = 1000
+        self.cooldown_daño = 600
 
 
     def cargar_partes_bala(self):

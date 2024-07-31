@@ -405,20 +405,26 @@ def rango_minimo_enemigos(grupo_enemigos, jugador):
     return enemigo_mas_cercano
 
 
-def crear_slime(pos_x, pos_y, Enemigo, SlimeVerde, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_actual, vuelta_slime):
+def crear_slime(pos_x, pos_y, Enemigo, SlimeVerde, SlimeRojo, grupo_enemigos, ultimo_slime, cooldown_slime, tiempo_actual, 
+                vuelta_slime_verde, vuelta_slime_rojo, nivel_anterior):
     if tiempo_actual - ultimo_slime > cooldown_slime:
         ultimo_slime = tiempo_actual
-        if vuelta_slime > 1:
-            vuelta_slime = 0
+        if vuelta_slime_verde > 1 and nivel_anterior >= 3:
+            vuelta_slime_verde = 0
             slime_verde = SlimeVerde(r"Seraph´s_wrath\assets\enemigos\Slimes\Green_Slime\derecha\Run_0.png", (128, 40), pos_x, pos_y, 5)
             grupo_enemigos.add(slime_verde)
+        if vuelta_slime_rojo > 1 and nivel_anterior >= 6:
+            vuelta_slime_rojo = 0
+            slime_rojo = SlimeRojo(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_0.png", (128, 40), pos_x, pos_y, 5)
+            grupo_enemigos.add(slime_rojo)
             
-        slime_azul = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), pos_x + 10, pos_y + 10, 5)
+        slime_azul = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), pos_x , pos_y, 5)
         grupo_enemigos.add(slime_azul)
-        vuelta_slime += 1
+        vuelta_slime_verde += 1
+        vuelta_slime_rojo += 1
 
         
-    return ultimo_slime, vuelta_slime
+    return ultimo_slime, vuelta_slime_verde, vuelta_slime_rojo
 
 def pausa(ventana, rect_pausa, imagen_pausa):
     func = True
