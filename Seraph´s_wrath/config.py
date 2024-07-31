@@ -17,9 +17,11 @@ grupo_arboles = pygame.sprite.Group()
 grupo_paredes = pygame.sprite.Group()
 grupo_proyectiles = pygame.sprite.Group()
 grupo_proyectiles_tp = pygame.sprite.Group()
+grupo_proyectiles_enemigos = pygame.sprite.Group()
 grupo_collecionables = pygame.sprite.Group()
 grupo_vidas = pygame.sprite.Group()
 grupo_xp = pygame.sprite.Group()
+
 
 vuelta_slime = 0
 offset_x = 0

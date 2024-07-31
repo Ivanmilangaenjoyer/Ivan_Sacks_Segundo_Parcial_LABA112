@@ -192,7 +192,68 @@ class Cuchillo(pygame.sprite.Sprite):
 
 
 
+class BalaSlimeVerde(Bala):
+    def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad_x, velocidad_y):
+        super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad_x, velocidad_y)
+        self.ultimo_daño = 0
+        self.cooldown_daño = 1000
 
 
+    def cargar_partes_bala(self):
+        self.diccionario_rectangulos["main"] = self.rect
+
+        self.diccionario_rectangulos["top"] = pygame.Rect(self.rect.left + 4, self.rect.top, self.rect.width - 5, 10)
+
+        self.diccionario_rectangulos["right"] = pygame.Rect(self.rect.right - 8, self.rect.top, 8, self.rect.height)
+
+        self.diccionario_rectangulos["left"] = pygame.Rect(self.rect.left, self.rect.top, 8, self.rect.height)
+
+        self.diccionario_rectangulos["bottom"] = pygame.Rect(self.rect.left + 5, self.rect.bottom - 10, self.rect.width - 5, 10)
+
+
+
+    def colision_jugador(self, objeto, lados_colisionar):
+            if self.diccionario_rectangulos[lados_colisionar[0]].colliderect(objeto.diccionario_rectangulos[lados_colisionar[1]]):
+                offset = (objeto.rect.x - self.rect.x, objeto.rect.y - self.rect.y)
+                if self.mask.overlap(objeto.mask, offset):
+                    if lados_colisionar[0] == "bottom":
+                        self.colision_piso = True
+                    elif lados_colisionar[0] == "top":
+                        self.colision_arriba = True
+                    elif lados_colisionar[0] == "right":
+                        self.colision_derecha = True
+                    elif lados_colisionar[0] == "left":
+                        self.colision_izquierda = True
+
+                    objeto.vidas -= 1
+                    self.ultimo_daño = self.tiempo_actual
+
+
+    def update(self, pantalla, jugador):
+        self.colision_piso = False
+        self.colision_arriba = False
+        self.colision_derecha = False
+        self.colision_izquierda = False
+
+        self.cargar_partes_bala()       
+
+        self.rect.x += self.velocidad_x
+        self.rect.y += self.velocidad_y
+
+        if self.tiempo_actual - self.ultimo_daño > self.cooldown_daño:            
+            self.colision_jugador(jugador, (("bottom", "top")))
+            self.colision_jugador(jugador, (("top", "bottom")))
+            self.colision_jugador(jugador, (("right", "left")))
+            self.colision_jugador(jugador, (("left", "right")))
+
+
+        self.tiempo_actual = pygame.time.get_ticks()
+
+        self.diccionario_rectangulos["top"]
+
+        # pygame.draw.rect(pantalla, (0,255,255), self.diccionario_rectangulos["right"])
+        # pygame.draw.rect(pantalla, (255,255,255), self.diccionario_rectangulos["left"])
+        # pygame.draw.rect(pantalla, (0,255,255), self.diccionario_rectangulos["bottom"])
+        # pygame.draw.rect(pantalla, (0,0,255), self.diccionario_rectangulos["top"])
 
 

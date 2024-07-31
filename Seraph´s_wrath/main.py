@@ -1,4 +1,5 @@
 import pygame, time, sys, random
+import json
 from config import *
 from modulo_funciones import *
 from pygame.locals import *
@@ -6,7 +7,6 @@ from paredes import *
 from jugador import *
 from armas import *
 from cargas import *
-import json
 
 pygame.init()
 pygame.font.init()
@@ -68,11 +68,15 @@ while True:
             sys.exit()
 
     teclas = pygame.key.get_pressed()
+
+    movimiento_personaje(teclas, movimiento_prota, que_hace, lista_sprites)
+
+
     if teclas[K_COMMA]:
         ultimo_xp = grupo_xp.sprites()[-1]
         ultimo_xp.ganar_xp(grupo_xp, 10, subir_nivel)
 
-    if teclas[K_p] and tiempo_real > 2000:
+    if teclas[K_p] and tiempo_real > 1000 and not teclas[K_m]:
         pausa(ventana, rect_pausa, imagen_pausa)
 
     if teclas[K_k]:
@@ -80,34 +84,6 @@ while True:
 
     if teclas[K_m]:
         ultimo_mute, mute = func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute, dicc_sonidos)
-
-    if teclas[K_d] or teclas[K_a] or teclas[K_w] or teclas[K_s]:
-        if teclas[K_d]:
-            movimiento_prota["derecha"] = True
-            que_hace[0] = "derecha"
-        elif teclas[K_a]:
-            movimiento_prota["izquierda"] = True
-            que_hace[0] = "izquierda"
-
-        if teclas[K_w] or teclas[K_s]:
-            if teclas[K_w]:
-                movimiento_prota["arriba"] = True
-                que_hace[0] = "arriba"
-            else:
-                movimiento_prota["abajo"] = True
-                que_hace[0] = "abajo"
-
-        if movimiento_prota["derecha"] == True:
-            lista_sprites["arriba"] = personaje_derecha
-            lista_sprites["abajo"] = personaje_derecha
-        elif movimiento_prota["izquierda"] == True:
-            lista_sprites["arriba"] = personaje_izquierda
-            lista_sprites["abajo"] = personaje_izquierda
-    else:
-        que_hace[0] = "nada"
-
-    if que_hace[0] != "nada": 
-        que_hace[1] = que_hace[0]
 
     if subir_nivel[1] > nivel_anterior:
         cooldown_slime -= 100
@@ -150,6 +126,7 @@ while True:
     ultima_bala_fuego = crear_bala_fuego(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles,
                                         dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada)
     
+    
     if dicc_cartas["sacrificial_dagger"] and dicc_cartas["cuchillo"]:
         crear_cuchillo_2(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles
                         , dicc_sonidos)
@@ -173,51 +150,40 @@ while True:
         abel_rect = abel_imagen.get_rect(centerx = jugador.rect.centerx - 50, centery = jugador.rect.centery)
         ventana.blit(abel_imagen, (abel_rect.x - offset_x, abel_rect.y - offset_y))
 
+
+
+    blitear_grupo(ventana, grupo_proyectiles, ((offset_x, offset_y)))
+    blitear_grupo(ventana, grupo_proyectiles_tp, ((offset_x, offset_y)))
+    blitear_grupo(ventana, grupo_proyectiles_enemigos, ((offset_x, offset_y)))
+    blitear_grupo(ventana, grupo_paredes, ((offset_x, offset_y)))
+    blitear_grupo(ventana, grupo_collecionables, ((offset_x, offset_y)))
+    blitear_grupo(ventana, grupo_enemigos, ((offset_x, offset_y)))
+    blitear_grupo(ventana, grupo_jugador, ((offset_x, offset_y)))
+    blitear_grupo(ventana, grupo_arboles, ((offset_x, offset_y)))
+    blitear_grupo(ventana, grupo_vidas)
+    blitear_grupo(ventana, grupo_xp)
+
     if mute:
         ventana.blit(imagen_mute, (rect_mute.x, rect_mute.y))
 
-    for proyectil in grupo_proyectiles:
-        ventana.blit(proyectil.image, (proyectil.rect.x - offset_x, proyectil.rect.y - offset_y))
-
-    for proyectil_tp in grupo_proyectiles_tp:
-        ventana.blit(proyectil_tp.image, (proyectil_tp.rect.x - offset_x, proyectil_tp.rect.y - offset_y))
-
-    for pared in grupo_paredes:
-        ventana.blit(pared.image, (pared.rect.x - offset_x, pared.rect.y - offset_y))
-
-    for collecionable in grupo_collecionables:
-            ventana.blit(collecionable.image, (collecionable.rect.x - offset_x, collecionable.rect.y - offset_y))
-
-    for vida in grupo_vidas:
-        ventana.blit(vida.image, (vida.rect.x, vida.rect.y))
-
-    for enemigo in grupo_enemigos:
-        ventana.blit(enemigo.image, (enemigo.rect.x - offset_x, enemigo.rect.y - offset_y))
-
-    for jugador in grupo_jugador:
-        ventana.blit(jugador.image, (jugador.rect.x - offset_x, jugador.rect.y - offset_y))
-
-    for arbol in grupo_arboles:
-        ventana.blit(arbol.image, (arbol.rect.x - offset_x, arbol.rect.y - offset_y))
-
-    for xp in grupo_xp:
-        ventana.blit(xp.image, (xp.rect.x, xp.rect.y))
-
     enemigo_cerca = rango_minimo_enemigos(grupo_enemigos, jugador)
+
     grupo_xp.update(ventana, jugador, grupo_vidas)
     grupo_vidas.update(grupo_vidas, jugador, dicc_cartas)
     grupo_collecionables.update(ventana, jugador, grupo_vidas, dicc_cartas)
     grupo_paredes.update(ventana, jugador, grupo_vidas)
     grupo_proyectiles.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
     grupo_proyectiles_tp.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
+    grupo_proyectiles_enemigos.update(ventana, jugador)
     grupo_jugador.update(lista_sprites, ventana, que_hace,  lista_grupos, movimiento_prota, dicc_cartas)
     grupo_arboles.update(ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_collecionables, dicc_cartas)
     grupo_enemigos.update(diccionarios_slimes, ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, jugador, grupo_enemigos, 
-                    dicc_cartas, offset_x, offset_y)
+                    dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos)
 
     movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
     tiempo_real = pygame.time.get_ticks()
-    print(subir_nivel)
+
+
     if jugador.vidas <= 0 and inmortalidad != True:
         print("muerte")
         with open(path_completo, "w") as file:   
@@ -225,6 +191,10 @@ while True:
             json.dump(contenido_actual, file)
             
         grupo_enemigos.empty()
+        grupo_proyectiles.empty()
+        grupo_proyectiles_enemigos.empty()
+        grupo_proyectiles_tp.empty()
+        
         inmortalidad = menu_muerte(ventana, subir_nivel, dicc_rect_img, dicc_sonidos, inmortalidad, contenido_actual, 
                                 anchura, altura)
         cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
@@ -247,7 +217,6 @@ while True:
         carta_nivel = None
         bandera_telepatia = True
         bandera_veinte_veinte = True
-        mute = False
         nivel_anterior = 0
         offset_x = 0
         offset_y = 0
@@ -272,6 +241,5 @@ while True:
         subir_nivel[1] = 0
 
         tiempo_real = pygame.time.get_ticks()
-        pygame.mixer.music.unpause()
 
     pygame.display.flip()

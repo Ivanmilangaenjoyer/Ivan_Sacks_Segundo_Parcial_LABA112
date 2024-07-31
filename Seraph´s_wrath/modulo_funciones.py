@@ -1,8 +1,60 @@
+import pygame, time, sys, random
+from pygame.locals import *
 
-import random, math
-import sys
 from pygame import mixer
 import pygame
+
+def movimiento_personaje(teclas: list, movimiento_prota: dict, que_hace: list, lista_sprites: dict):
+    """Modifica o crea valores en variables (según las teclas presionadas) para el correcto movimiento 
+    del jugador e carga los respectivos sprites,
+    no retorna nada
+
+    Args:
+        teclas (list): Las teclas que presiono el jugador
+        movimiento_prota (dict): _description_
+        que_hace (list): _description_
+        lista_sprites (dict): _description_
+    """
+    if teclas[K_d] or teclas[K_a] or teclas[K_w] or teclas[K_s]:
+        if teclas[K_d]:
+            movimiento_prota["derecha"] = True
+            que_hace[0] = "derecha"
+        elif teclas[K_a]:
+            movimiento_prota["izquierda"] = True
+            que_hace[0] = "izquierda"
+
+        if teclas[K_w] or teclas[K_s]:
+            if teclas[K_w]:
+                movimiento_prota["arriba"] = True
+                que_hace[0] = "arriba"
+            else:
+                movimiento_prota["abajo"] = True
+                que_hace[0] = "abajo"
+
+        if movimiento_prota["derecha"] == True:
+            lista_sprites["arriba"] = lista_sprites["derecha"]
+            lista_sprites["abajo"] = lista_sprites["derecha"]
+        elif movimiento_prota["izquierda"] == True:
+            lista_sprites["arriba"] = lista_sprites["izquierda"]
+            lista_sprites["abajo"] = lista_sprites["izquierda"]
+    else:
+        que_hace[0] = "nada"
+
+    if que_hace[0] != "nada": 
+        que_hace[1] = que_hace[0]
+
+def blitear_grupo(ventana: pygame.Surface, grupo_sprites: pygame.sprite.Group,  offsets: tuple = (0,0)) -> None:
+    """Recibe un grupo de sprites, lo recorre y lo imprime en pantalla,
+    le resta al rectangulo de cada sprite los offsets, y si no tiene, le resta 0,
+    no retorna nada
+
+    Args:
+        ventana (pygame.Surface): La ventana donde se imprimira el grupo
+        grupo_sprites (pygame.sprite.Group): El grupo a imprimir
+        offsets (tuple, optional): Valores para sincronizar el movimiento de la pantalla. Si no tiene es: (0,0).
+    """
+    for sprite in grupo_sprites:
+        ventana.blit(sprite.image, (sprite.rect.x - offsets[0], sprite.rect.y - offsets[1]))
 
 def crear_rectango_imagen(dir_imagen, pos_x, pos_y, medidas ):
     imagen = pygame.transform.scale(pygame.image.load(dir_imagen), medidas)
@@ -367,8 +419,6 @@ def crear_slime(pos_x, pos_y, Enemigo, SlimeVerde, grupo_enemigos, ultimo_slime,
 
         
     return ultimo_slime, vuelta_slime
-
-
 
 def pausa(ventana, rect_pausa, imagen_pausa):
     func = True
