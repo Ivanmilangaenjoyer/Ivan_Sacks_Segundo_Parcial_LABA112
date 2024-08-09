@@ -87,7 +87,10 @@ while True:
                                                     musica, efectos)
 
     if subir_nivel[1] > nivel_anterior:
-        cooldown_slime -= 100
+        cooldown_slime_verde -= 100
+        cooldown_slime_rojo -= 100
+        cooldown_slime_azul -= 100
+
         carta_nivel = cartas_usuario(ventana, lista_al, diccionario_cartas, cargar_cartas, anchura, altura)
         ultima_bala_fuego = tiempo_real
         ultima_bala_fuego = tiempo_real
@@ -105,9 +108,16 @@ while True:
         cargar_linea_objetos(Arbol, r"Seraph´s_wrath\assets\objetos_entorno\Arboles\fir_tree_4.png", num_x, num_y, 50, 150, 1, grupo_arboles, {"x": 0, "y": 0})
 
     rango_pos_x, rango_pos_y = rango_jugador(jugador)
-    ultimo_slime, vuelta_slime_verde, vuelta_slime_rojo = crear_slime(rango_pos_x, rango_pos_y, Enemigo, SlimeVerde, SlimeRojo,
-                                    grupo_enemigos, ultimo_slime,   cooldown_slime, tiempo_real, vuelta_slime_verde, vuelta_slime_rojo, nivel_anterior)
     
+    ultimo_slime_azul = crear_slime_azul(rango_pos_x, rango_pos_y, Enemigo, grupo_enemigos, ultimo_slime_azul, 
+                                        cooldown_slime_azul, tiempo_real)
+
+    ultimo_slime_verde = crear_slime_verde(rango_pos_x, rango_pos_y, SlimeVerde, grupo_enemigos, ultimo_slime_verde, 
+                                        cooldown_slime_verde, tiempo_real, nivel_anterior)
+    
+    ultimo_slime_rojo = crear_slime_rojo(rango_pos_x, rango_pos_y, SlimeRojo, grupo_enemigos, ultimo_slime_rojo, 
+                                    cooldown_slime_rojo, tiempo_real, nivel_anterior)
+
     if dicc_cartas["veinte_veinte"] and bandera_veinte_veinte:
         cooldown_bala_fuego = cooldown_bala_fuego - 700
         bandera_veinte_veinte = False
@@ -191,6 +201,7 @@ while True:
         grupo_proyectiles.empty()
         grupo_proyectiles_enemigos.empty()
         grupo_proyectiles_tp.empty()
+        grupo_collecionables.empty()
         
         inmortalidad, musica, efectos = menu_muerte(ventana, subir_nivel, dicc_rect_img, dicc_sonidos, inmortalidad, contenido_actual, 
                                 anchura, altura, musica, efectos)
@@ -239,7 +250,11 @@ while True:
         tiempo_real = pygame.time.get_ticks()
 
         if musica:
-            pygame.mixer.music.unpause()    
+            pygame.mixer.music.unpause()  
+        if efectos:
+            dicc_sonidos["cuchillo"].set_volume(0.1)
+            dicc_sonidos["explosion"].set_volume(0.1)
+            dicc_sonidos["muerte"].set_volume(0.1)  
 
 
     pygame.display.flip()

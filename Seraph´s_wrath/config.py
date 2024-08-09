@@ -22,9 +22,6 @@ grupo_collecionables = pygame.sprite.Group()
 grupo_vidas = pygame.sprite.Group()
 grupo_xp = pygame.sprite.Group()
 
-
-vuelta_slime_verde = 0
-vuelta_slime_rojo = 0
 offset_x = 0
 offset_y = 0
 scroll_area_height = 300
@@ -44,8 +41,14 @@ ultima_bala_fuego = 0
 ultimo_cuchillo = 0
 cooldown_bala_fuego = 1500
 cooldown_cuchillo = 2000
-ultimo_slime = 0
-cooldown_slime = 2700
+ultimo_slime_azul = 0
+ultimo_slime_verde = 0
+ultimo_slime_rojo = 0
+
+cooldown_slime_azul = 2700
+cooldown_slime_verde = 4200
+cooldown_slime_rojo = 3700
+
 
 jugador_colision = False
 carta_nivel = None
