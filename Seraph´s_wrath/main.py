@@ -137,13 +137,18 @@ while True:
     ultima_bala_fuego = crear_bala_fuego(tiempo_real, ultima_bala_fuego, cooldown_bala_fuego, jugador, Bala, grupo_proyectiles,
                                         dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada)
     
-    if dicc_cartas["sacrificial_dagger"] and dicc_cartas["cuchillo"]:
-        crear_cuchillo_2(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles,
-                        dicc_sonidos)
+    if bandera_sacrificial_dagger == False:
+        if dicc_cartas["sacrificial_dagger"] and dicc_cartas["cuchillo"]:
+            crear_cuchillo_2(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles,
+                            dicc_sonidos)
 
     if dicc_cartas["cuchillo"]:
         ultimo_cuchillo = crear_cuchillo(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, 
                                         grupo_proyectiles, dicc_sonidos)
+        
+        if bandera_sacrificial_dagger:
+            bandera_sacrificial_dagger = False
+            cargar_cartas["sacrificial_dagger"] = r"Seraph´s_wrath\assets\cartas\sacrificial_dagger.jpg"
 
     if ((jugador.rect.right - offset_x >= anchura - scroll_area_width) and jugador.velocidad_x > 0) and offset_x < 640 or (
             (jugador.rect.left - offset_x <= scroll_area_width) and jugador.velocidad_x < 0) and offset_x > 0:
@@ -216,7 +221,7 @@ while True:
         
         cargar_cartas = {"veinte_veinte": r"Seraph´s_wrath\assets\cartas\veinte_veinte.jpg", "abel": r"Seraph´s_wrath\assets\cartas\abel.jpg", "biblia": r"Seraph´s_wrath\assets\cartas\biblia.jpg", 
                 "cerebro": r"Seraph´s_wrath\assets\cartas\cerebro.jpg", "cuchillo": r"Seraph´s_wrath\assets\cartas\cuchillo.jpg", "glass_cannon": r"Seraph´s_wrath\assets\cartas\glass_cannon.jpg",
-                "lucky_foot": r"Seraph´s_wrath\assets\cartas\lucky_foot.jpg", "midas": r"Seraph´s_wrath\assets\cartas\midas.jpg", "penny": r"Seraph´s_wrath\assets\cartas\penny.jpg", "sacrificial_dagger": r"Seraph´s_wrath\assets\cartas\sacrificial_dagger.jpg",
+                "lucky_foot": r"Seraph´s_wrath\assets\cartas\lucky_foot.jpg", "midas": r"Seraph´s_wrath\assets\cartas\midas.jpg", "penny": r"Seraph´s_wrath\assets\cartas\penny.jpg",
                 "steam_final": r"Seraph´s_wrath\assets\cartas\steam_final.jpg", "suicide_king": r"Seraph´s_wrath\assets\cartas\suicide_king.jpg", "telepatia": r"Seraph´s_wrath\assets\cartas\telepatia.jpg", "xray": r"Seraph´s_wrath\assets\cartas\xray.jpg"}
 
         jugador.rect.centerx = anchura // 2
@@ -225,6 +230,7 @@ while True:
         carta_nivel = None
         bandera_telepatia = True
         bandera_veinte_veinte = True
+        bandera_sacrificial_dagger = True
         nivel_anterior = 0
         offset_x = 0
         offset_y = 0

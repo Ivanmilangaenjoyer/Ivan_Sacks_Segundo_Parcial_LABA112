@@ -44,16 +44,15 @@ cooldown_cuchillo = 2000
 ultimo_slime_azul = 0
 ultimo_slime_verde = 0
 ultimo_slime_rojo = 0
-
 cooldown_slime_azul = 2700
 cooldown_slime_verde = 4200
 cooldown_slime_rojo = 3700
-
 
 jugador_colision = False
 carta_nivel = None
 bandera_telepatia = True
 bandera_veinte_veinte = True
+bandera_sacrificial_dagger = True
 mute = False
 musica = True
 efectos = True
@@ -68,7 +67,7 @@ movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierd
 
 cargar_cartas = {"veinte_veinte": r"Seraph´s_wrath\assets\cartas\veinte_veinte.jpg", "abel": r"Seraph´s_wrath\assets\cartas\abel.jpg", "biblia": r"Seraph´s_wrath\assets\cartas\biblia.jpg", 
                 "cerebro": r"Seraph´s_wrath\assets\cartas\cerebro.jpg", "cuchillo": r"Seraph´s_wrath\assets\cartas\cuchillo.jpg", "glass_cannon": r"Seraph´s_wrath\assets\cartas\glass_cannon.jpg",
-                "lucky_foot": r"Seraph´s_wrath\assets\cartas\lucky_foot.jpg", "midas": r"Seraph´s_wrath\assets\cartas\midas.jpg", "penny": r"Seraph´s_wrath\assets\cartas\penny.jpg", "sacrificial_dagger": r"Seraph´s_wrath\assets\cartas\sacrificial_dagger.jpg",
+                "lucky_foot": r"Seraph´s_wrath\assets\cartas\lucky_foot.jpg", "midas": r"Seraph´s_wrath\assets\cartas\midas.jpg", "penny": r"Seraph´s_wrath\assets\cartas\penny.jpg",
                 "steam_final": r"Seraph´s_wrath\assets\cartas\steam_final.jpg", "suicide_king": r"Seraph´s_wrath\assets\cartas\suicide_king.jpg", "telepatia": r"Seraph´s_wrath\assets\cartas\telepatia.jpg", "xray": r"Seraph´s_wrath\assets\cartas\xray.jpg"}
 
 diccionario_cartas = {"carta_0": [], "carta_1": [], "carta_2": []}
