@@ -17,8 +17,8 @@ class Jugador(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.diccionario_rectangulos = {}
         self.diccionario_mascaras = {}
-        self.velocidad_x = velocidad
-        self.velocidad_y = velocidad
+        self.velocidad_x = 4
+        self.velocidad_y = 4
         self.cooldown_animacion = 100
         self.cooldown_animacion_salto = 50
         self.ultima_animacion = 0
@@ -97,6 +97,9 @@ class Jugador(pygame.sprite.Sprite):
         self.colision_dercha = False
         self.colision_izquierda = False
         self.colision_arriba = False
+
+        self.velocidad_x = 0
+        self.velocidad_y = 0
 
         if dicc_cartas["suicide_king"] and self.bandera_suicide_king:
             self.bandera_suicide_king = False
@@ -302,30 +305,59 @@ class SlimeRojo(Enemigo):
     def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad):
         super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad = 0)
         self.vidas = 2
-        self.velocidad_x = 3
-        self.velocidad_y = 3
+        self.velocidad_x = 2
+        self.velocidad_y = 2
+        self.velocidad_x_dash = 0
+        self.velocidad_y_dash = 0
+        self.dasheando = False
+        self.tiempo_dasheando = 0
+        self.cooldown_dash = 5000
+        self.ultimo_dash = 0
+        self.distancia = 0
 
     def movimiento(self, jugador):
-        if jugador.rect.centerx < self.rect.centerx and self.colision_izquierda == False:
-            self.velocidad_x = 3
-            self.rect.x -= self.velocidad_x
-        if jugador.rect.centerx > self.rect.centerx and self.colision_derecha == False:
-            self.velocidad_x = 3
-            self.rect.x += self.velocidad_x
+        if self.dasheando and self.tiempo_dasheando <= 100:
+            self.rect.x += self.velocidad_x_dash * 3
+            self.rect.y += self.velocidad_y_dash * 3
+        else:
+            if jugador.rect.centerx < self.rect.centerx and self.colision_izquierda == False:
+                self.velocidad_x = -2
+                self.rect.x += self.velocidad_x
+            if jugador.rect.centerx > self.rect.centerx and self.colision_derecha == False:
+                self.velocidad_x = 2
+                self.rect.x += self.velocidad_x
 
-        if jugador.rect.centery < self.rect.centery and self.colision_arriba == False:
-            self.velocidad_y = 3
-            self.rect.y -= self.velocidad_y
-        if jugador.rect.centery > self.rect.centery and self.colision_piso == False:
-            self.velocidad_y = 3
-            self.rect.y += self.velocidad_y
+            if jugador.rect.centery < self.rect.centery and self.colision_arriba == False:
+                self.velocidad_y = -2
+                self.rect.y += self.velocidad_y
+            if jugador.rect.centery > self.rect.centery and self.colision_piso == False:
+                self.velocidad_y = 2
+                self.rect.y += self.velocidad_y
 
     def update(self, diccionarios_slimes, pantalla, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, 
         jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos):
-            self.velocidad_y = 0
-            self.velocidad_x = 0
+            dx = jugador.rect.centerx - self.rect.centerx
+            dy = jugador.rect.centery - self.rect.centery
+            self.distancia = math.sqrt(dx**2 + dy**2)
 
             self.tiempo_actual = pygame.time.get_ticks() 
+
+            if self.distancia < 150:
+                if (self.tiempo_actual - self.ultimo_dash > self.cooldown_dash):
+                        self.dasheando = True
+                        self.velocidad_x_dash = self.velocidad_x
+                        self.velocidad_y_dash = self.velocidad_y
+                        self.ultimo_dash = self.tiempo_actual
+                        self.tiempo_dasheando = 0
+
+            if self.distancia > 300 or self.tiempo_dasheando > 100:
+                self.dasheando = False
+                self.tiempo_dasheando = 0
+
+            self.tiempo_dasheando += 3
+
+            self.velocidad_x = 0
+            self.velocidad_y = 0
 
             self.colision_piso = False
             self.colision_arriba = False

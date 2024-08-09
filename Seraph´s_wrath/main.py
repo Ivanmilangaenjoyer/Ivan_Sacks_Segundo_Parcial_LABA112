@@ -33,10 +33,9 @@ ventana = pygame.display.set_mode((anchura, altura))
 pygame.display.set_caption("Seraph´s wrath")
 
 jugador = Jugador(r"Seraph´s_wrath\assets\prota\Quieto\Idle_0.png", (anchura_prota, altura_prota), anchura // 2, altura // 2, 5)
-slime = Enemigo(r"Seraph´s_wrath\assets\enemigos\Slimes\Blue_Slime\derecha\Run_0.png", (128, 40), 400, 100, 5)
-
+slime_rojo = SlimeRojo(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_0.png", (128, 40), 100, 100, 5)
 grupo_jugador.add(jugador)
-grupo_enemigos.add(slime)
+grupo_enemigos.add(slime_rojo)
 
 cargar_linea_objetos(Objetos, r"Seraph´s_wrath\assets\fondos\musgo.png",0, 0, 70, 50, 22, grupo_paredes, {"x": 70, "y": 0})
 cargar_linea_objetos(Objetos, r"Seraph´s_wrath\assets\fondos\musgo.png",0, 0, 70, 50, 25, grupo_paredes, {"x": 0, "y": 50})
@@ -57,7 +56,8 @@ cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar.png", -5, 495
 cantidad_xp = 5
 
 pygame.mixer.music.play(-1)
-inmortalidad = menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchura, altura, dicc_sonidos)
+inmortalidad, musica, efectos = menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchura, altura, 
+                                    dicc_sonidos, musica, efectos)
 
 while True:
     reloj.tick(FPS)
@@ -83,7 +83,8 @@ while True:
         jugador.vidas -= 1
 
     if teclas[K_m]:
-        ultimo_mute, mute = func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute, dicc_sonidos)
+        ultimo_mute, mute, musica, efectos = func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute, dicc_sonidos, 
+                                                    musica, efectos)
 
     if subir_nivel[1] > nivel_anterior:
         cooldown_slime -= 100
@@ -108,11 +109,11 @@ while True:
                                     grupo_enemigos, ultimo_slime,   cooldown_slime, tiempo_real, vuelta_slime_verde, vuelta_slime_rojo, nivel_anterior)
     
     if dicc_cartas["veinte_veinte"] and bandera_veinte_veinte:
-        cooldown_bala_fuego = cooldown_bala_fuego - 500
+        cooldown_bala_fuego = cooldown_bala_fuego - 700
         bandera_veinte_veinte = False
 
     if dicc_cartas["telepatia"] and bandera_telepatia:
-        cooldown_bala_fuego += 3000
+        cooldown_bala_fuego += 2700
         bandera_telepatia = False
 
     if dicc_cartas["cerebro"]:
@@ -127,8 +128,8 @@ while True:
                                         dicc_cartas, que_hace, grupo_proyectiles_tp, Bala_guiada)
     
     if dicc_cartas["sacrificial_dagger"] and dicc_cartas["cuchillo"]:
-        crear_cuchillo_2(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles
-                        , dicc_sonidos)
+        crear_cuchillo_2(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, grupo_proyectiles,
+                        dicc_sonidos)
 
     if dicc_cartas["cuchillo"]:
         ultimo_cuchillo = crear_cuchillo(tiempo_real, ultimo_cuchillo, cooldown_cuchillo, jugador, Cuchillo, 
@@ -149,7 +150,6 @@ while True:
         abel_rect = abel_imagen.get_rect(centerx = jugador.rect.centerx - 50, centery = jugador.rect.centery)
         ventana.blit(abel_imagen, (abel_rect.x - offset_x, abel_rect.y - offset_y))
 
-
     blitear_grupo(ventana, grupo_proyectiles, ((offset_x, offset_y)))
     blitear_grupo(ventana, grupo_proyectiles_tp, ((offset_x, offset_y)))
     blitear_grupo(ventana, grupo_proyectiles_enemigos, ((offset_x, offset_y)))
@@ -161,7 +161,7 @@ while True:
     blitear_grupo(ventana, grupo_vidas)
     blitear_grupo(ventana, grupo_xp)
 
-    if mute:
+    if mute and musica == False and efectos == False:
         ventana.blit(imagen_mute, (rect_mute.x, rect_mute.y))
 
     enemigo_cerca = rango_minimo_enemigos(grupo_enemigos, jugador)
@@ -172,7 +172,7 @@ while True:
     grupo_paredes.update(ventana, jugador, grupo_vidas)
     grupo_proyectiles.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
     grupo_proyectiles_tp.update(enemigo_cerca, dicc_cartas, grupo_enemigos, explosion, dicc_rect_img, dicc_sonidos)
-    grupo_proyectiles_enemigos.update(ventana, jugador)
+    grupo_proyectiles_enemigos.update(ventana, jugador, dicc_cartas)
     grupo_jugador.update(lista_sprites, ventana, que_hace,  lista_grupos, movimiento_prota, dicc_cartas)
     grupo_arboles.update(ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_collecionables, dicc_cartas)
     grupo_enemigos.update(diccionarios_slimes, ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, jugador, grupo_enemigos, 
@@ -180,7 +180,6 @@ while True:
 
     movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
     tiempo_real = pygame.time.get_ticks()
-
 
     if jugador.vidas <= 0 and inmortalidad != True:
         print("muerte")
@@ -193,8 +192,8 @@ while True:
         grupo_proyectiles_enemigos.empty()
         grupo_proyectiles_tp.empty()
         
-        inmortalidad = menu_muerte(ventana, subir_nivel, dicc_rect_img, dicc_sonidos, inmortalidad, contenido_actual, 
-                                anchura, altura)
+        inmortalidad, musica, efectos = menu_muerte(ventana, subir_nivel, dicc_rect_img, dicc_sonidos, inmortalidad, contenido_actual, 
+                                anchura, altura, musica, efectos)
         cargar_linea_objetos(Xp, r"Seraph´s_wrath\assets\GUI\Settings\Bar BG.png", 15, 495, 30, 10, 30, grupo_xp, {"x": 30, "y": 0})
         diccionario_cartas = {"carta_0": [], "carta_1": [], "carta_2": []}
 
@@ -226,7 +225,6 @@ while True:
         movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
         jugador.vidas = 4
         
-
         cargar_linea_objetos(Vidas, r"Seraph´s_wrath\assets\items\muertos\Transperent\Icon1.png",32, 20, 32, 32, 3, grupo_vidas, {"x": 50, "y": 0})
 
         with open(path_completo, 'r') as archivo:
@@ -239,5 +237,9 @@ while True:
         subir_nivel[1] = 0
 
         tiempo_real = pygame.time.get_ticks()
+
+        if musica:
+            pygame.mixer.music.unpause()    
+
 
     pygame.display.flip()

@@ -52,6 +52,8 @@ carta_nivel = None
 bandera_telepatia = True
 bandera_veinte_veinte = True
 mute = False
+musica = True
+efectos = True
 inmortalidad = False
 
 subir_nivel = [0, 0]

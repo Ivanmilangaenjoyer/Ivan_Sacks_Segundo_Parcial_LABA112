@@ -24,7 +24,7 @@ class Bala(pygame.sprite.Sprite):
         self.muerte = False
         self.daño = 1
         self.bandera_cannon = True
-        self.suicide_king = True
+        self.bandera_suicide_king = True
 
     def cargar_partes_bala(self):
         self.diccionario_rectangulos["main"] = self.rect
@@ -73,9 +73,9 @@ class Bala(pygame.sprite.Sprite):
             self.daño = self.daño * 2
             self.bandera_cannon = False
 
-        if dicc_cartas["suicide_king"] and self.suicide_king:
+        if dicc_cartas["suicide_king"] and self.bandera_suicide_king:
             self.daño = self.daño * 2
-            self.suicide_king = False
+            self.bandera_suicide_king = False
 
         self.cargar_partes_bala()       
         self.rect.x += self.velocidad_x
@@ -108,9 +108,9 @@ class Bala_guiada(Bala):
             self.daño = self.daño * 2
             self.bandera_cannon = False
 
-        if dicc_cartas["suicide_king"] and self.suicide_king:
+        if dicc_cartas["suicide_king"] and self.bandera_suicide_king:
             self.daño = self.daño * 2
-            self.suicide_king = False
+            self.bandera_suicide_king = False
 
         self.cargar_partes_bala_guiada()
         self.movimiento_guiado(enemigo_cerca)
@@ -180,7 +180,7 @@ class Cuchillo(pygame.sprite.Sprite):
 
         if dicc_cartas["suicide_king"] and self.bandera_suicide_king:
             self.daño = self.daño * 2
-            self.suicide_king = False
+            self.bandera_suicide_king = False
 
         if self.anim_muerte:
             self.kill()
@@ -197,7 +197,8 @@ class BalaSlimeVerde(Bala):
         super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad_x, velocidad_y)
         self.ultimo_daño = 0
         self.cooldown_daño = 600
-
+        self.daño = 1
+        self.bandera_cannon = True
 
     def cargar_partes_bala(self):
         self.diccionario_rectangulos["main"] = self.rect
@@ -209,8 +210,6 @@ class BalaSlimeVerde(Bala):
         self.diccionario_rectangulos["left"] = pygame.Rect(self.rect.left, self.rect.top, 8, self.rect.height)
 
         self.diccionario_rectangulos["bottom"] = pygame.Rect(self.rect.left + 5, self.rect.bottom - 10, self.rect.width - 5, 10)
-
-
 
     def colision_jugador(self, objeto, lados_colisionar):
             if self.diccionario_rectangulos[lados_colisionar[0]].colliderect(objeto.diccionario_rectangulos[lados_colisionar[1]]):
@@ -225,17 +224,20 @@ class BalaSlimeVerde(Bala):
                     elif lados_colisionar[0] == "left":
                         self.colision_izquierda = True
 
-                    objeto.vidas -= 1
+                    objeto.vidas -= self.daño
                     self.ultimo_daño = self.tiempo_actual
 
 
-    def update(self, pantalla, jugador):
+    def update(self, pantalla, jugador, dicc_cartas):
         self.colision_piso = False
         self.colision_arriba = False
         self.colision_derecha = False
         self.colision_izquierda = False
-
         self.cargar_partes_bala()       
+
+        if dicc_cartas["glass_cannon"] and self.bandera_cannon:
+            self.daño = self.daño * 2
+            self.bandera_cannon = False
 
         self.rect.x += self.velocidad_x
         self.rect.y += self.velocidad_y

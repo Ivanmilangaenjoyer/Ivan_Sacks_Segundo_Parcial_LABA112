@@ -440,10 +440,8 @@ def pausa(ventana, rect_pausa, imagen_pausa):
         ventana.blit(imagen_pausa, (rect_pausa.x, rect_pausa.y))
         pygame.display.update()
 
-def menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchura, altura, dicc_sonidos):
+def menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchura, altura, dicc_sonidos, musica, efectos):
     func = True
-    y = 100
-    vueltas = len(contenido_actual)
     while func:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
@@ -455,7 +453,7 @@ def menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchu
                 if dicc_rect_img["empezar"][1].collidepoint(click_pos):
                     func = False
                 elif dicc_rect_img["opciones"][1].collidepoint(click_pos):
-                    inmortalidad = opciones(ventana, inmortalidad, dicc_rect_img, dicc_sonidos)
+                    inmortalidad, musica, efectos = opciones(ventana, inmortalidad, musica, efectos, dicc_rect_img, dicc_sonidos)
                 elif dicc_rect_img["ranking"][1].collidepoint(click_pos):
                     ranking(ventana, contenido_actual, dicc_rect_img, anchura, altura)
                 elif dicc_rect_img["salir"][1].collidepoint(click_pos):
@@ -469,7 +467,8 @@ def menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchu
         ventana.blit(dicc_rect_img["ranking"][0], (dicc_rect_img["ranking"][1].x, dicc_rect_img["ranking"][1].y))
         ventana.blit(dicc_rect_img["salir"][0], (dicc_rect_img["salir"][1].x, dicc_rect_img["salir"][1].y))
         pygame.display.update()
-    return inmortalidad
+
+    return inmortalidad, musica, efectos
 
 def ranking(ventana, contenido_actual, dicc_rect_img, anchura, altura):
     func = True
@@ -499,15 +498,22 @@ def ranking(ventana, contenido_actual, dicc_rect_img, anchura, altura):
         pygame.display.flip()
 
 
-def opciones(ventana, inmortalidad, dicc_rect_img, dicc_sonidos):
+def opciones(ventana, inmortalidad, musica, efectos, dicc_rect_img, dicc_sonidos):
     tiempo_actual = pygame.time.get_ticks()
-    imagen_musica, rect_musica = dicc_rect_img["musica"]["on"][0], dicc_rect_img["musica"]["on"][1] 
-    imagen_efectos, rect_efectos = dicc_rect_img["efectos"]["on"][0], dicc_rect_img["efectos"]["on"][1]
-    imagen_inmortalidad, rect_inmortalidad = dicc_rect_img["inmortalidad"]["off"][0], dicc_rect_img["inmortalidad"]["off"][1]
+    if musica:
+        imagen_musica, rect_musica = dicc_rect_img["musica"]["on"][0], dicc_rect_img["musica"]["on"][1] 
+    else:
+        imagen_musica, rect_musica = dicc_rect_img["musica"]["off"][0], dicc_rect_img["musica"]["off"][1] 
+    if efectos:
+        imagen_efectos, rect_efectos = dicc_rect_img["efectos"]["on"][0], dicc_rect_img["efectos"]["on"][1]
+    else:
+        imagen_efectos, rect_efectos = dicc_rect_img["efectos"]["off"][0], dicc_rect_img["efectos"]["off"][1]
+    if inmortalidad:
+        imagen_inmortalidad, rect_inmortalidad = dicc_rect_img["inmortalidad"]["on"][0], dicc_rect_img["inmortalidad"]["on"][1]
+    else:
+        imagen_inmortalidad, rect_inmortalidad = dicc_rect_img["inmortalidad"]["off"][0], dicc_rect_img["inmortalidad"]["off"][1]
+
     func = True
-    musica = True
-    efectos = True
-    inmortalidad = False
     ultimo_click = 0
     cooldown_click = 300
     while func:
@@ -566,10 +572,10 @@ def opciones(ventana, inmortalidad, dicc_rect_img, dicc_sonidos):
         ventana.blit(dicc_rect_img["atras"][0], (dicc_rect_img["atras"][1].x, dicc_rect_img["atras"][1].y))
         pygame.display.update()
 
-    return inmortalidad
+    return inmortalidad, musica, efectos
 
 
-def func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute, dicc_sonidos):
+def func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute, dicc_sonidos, musica, efectos):
         if tiempo_real - ultimo_mute > cooldown_mute:
             ultimo_mute = tiempo_real
             if mute:
@@ -578,16 +584,20 @@ def func_mute(mute, tiempo_real, ultimo_mute, cooldown_mute, dicc_sonidos):
                 dicc_sonidos["explosion"].set_volume(0.1)
                 dicc_sonidos["muerte"].set_volume(0.1)
                 mute = False
+                musica = True
+                efectos = True
             else:
-                mute = True
                 pygame.mixer.music.pause()
                 dicc_sonidos["cuchillo"].set_volume(0)
                 dicc_sonidos["explosion"].set_volume(0)
                 dicc_sonidos["muerte"].set_volume(0)
+                mute = True
+                musica = False
+                efectos = False
 
-        return ultimo_mute, mute
+        return ultimo_mute, mute, musica, efectos
 
-def menu_muerte(ventana, nivel, dicc_rect_img, dicc_sonidos, inmortalidad, contenido_actual, anchura, altura):
+def menu_muerte(ventana, nivel, dicc_rect_img, dicc_sonidos, inmortalidad, contenido_actual, anchura, altura, musica, efectos):
     func = True
     pygame.mixer.music.pause()
     dicc_sonidos["muerte"].play()
@@ -606,7 +616,9 @@ def menu_muerte(ventana, nivel, dicc_rect_img, dicc_sonidos, inmortalidad, conte
                 elif dicc_rect_img["reintentar"][1].collidepoint(click_pos):
                     func = False
                 elif dicc_rect_img["menu_muerte"][1].collidepoint(click_pos):
-                    return menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img, anchura, altura, dicc_sonidos)
+                    inmortalidad, musica, efectos = menu_principal(ventana, inmortalidad, contenido_actual, dicc_rect_img,
+                                                                anchura, altura, dicc_sonidos, musica, efectos)
+                    func = False
 
         ventana.blit(dicc_rect_img["muerte"][0], (dicc_rect_img["muerte"][1].x, dicc_rect_img["muerte"][1].y))
         ventana.blit(dicc_rect_img["reintentar"][0], (dicc_rect_img["reintentar"][1].x, dicc_rect_img["reintentar"][1].y))
@@ -617,3 +629,4 @@ def menu_muerte(ventana, nivel, dicc_rect_img, dicc_sonidos, inmortalidad, conte
 
         pygame.display.update()
 
+    return inmortalidad, musica, efectos
