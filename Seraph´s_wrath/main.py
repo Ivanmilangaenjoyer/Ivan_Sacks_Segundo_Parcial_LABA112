@@ -33,9 +33,9 @@ ventana = pygame.display.set_mode((anchura, altura))
 pygame.display.set_caption("Seraph´s wrath")
 
 jugador = Jugador(r"Seraph´s_wrath\assets\prota\Quieto\Idle_0.png", (anchura_prota, altura_prota), anchura // 2, altura // 2, 5)
-slime_rojo = SlimeRojo(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_0.png", (128, 40), 100, 100, 5)
+boss = Boss(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo\abajo_0.png", (43, 59), 100, 100, 5)
 grupo_jugador.add(jugador)
-grupo_enemigos.add(slime_rojo)
+grupo_enemigos.add(boss)
 
 cargar_linea_objetos(Objetos, r"Seraph´s_wrath\assets\fondos\musgo.png",0, 0, 70, 50, 22, grupo_paredes, {"x": 70, "y": 0})
 cargar_linea_objetos(Objetos, r"Seraph´s_wrath\assets\fondos\musgo.png",0, 0, 70, 50, 25, grupo_paredes, {"x": 0, "y": 50})
@@ -120,6 +120,7 @@ while True:
 
     if dicc_cartas["veinte_veinte"] and bandera_veinte_veinte:
         cooldown_bala_fuego = cooldown_bala_fuego - 700
+        cooldown_cuchillo = cooldown_cuchillo - 500
         bandera_veinte_veinte = False
 
     if dicc_cartas["telepatia"] and bandera_telepatia:
@@ -191,7 +192,7 @@ while True:
     grupo_jugador.update(lista_sprites, ventana, que_hace,  lista_grupos, movimiento_prota, dicc_cartas)
     grupo_arboles.update(ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_collecionables, dicc_cartas)
     grupo_enemigos.update(diccionarios_slimes, ventana, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, jugador, grupo_enemigos, 
-                    dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos)
+                    dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos, diccionario_boss)
 
     movimiento_prota = {"derecha": False, "arriba": False, "abajo": False, "izquierda": False}
     tiempo_real = pygame.time.get_ticks()

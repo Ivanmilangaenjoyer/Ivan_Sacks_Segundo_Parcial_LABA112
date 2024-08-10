@@ -245,7 +245,7 @@ class Enemigo(Jugador):
                                 self.colision = False
 
     def update(self, diccionarios_slimes, pantalla, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, 
-            jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos):
+            jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos, diccionario_boss):
         self.tiempo_actual = pygame.time.get_ticks() 
         self.colision_piso = False
         self.colision_arriba = False
@@ -335,7 +335,7 @@ class SlimeRojo(Enemigo):
                 self.rect.y += self.velocidad_y
 
     def update(self, diccionarios_slimes, pantalla, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, 
-        jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos):
+        jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos, diccionario_boss):
             dx = jugador.rect.centerx - self.rect.centerx
             dy = jugador.rect.centery - self.rect.centery
             self.distancia = math.sqrt(dx**2 + dy**2)
@@ -476,7 +476,7 @@ class SlimeVerde(Enemigo):
             self.rect.y += self.velocidad_y
 
     def update(self, diccionarios_slimes, pantalla, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, 
-        jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos):
+        jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos, diccionario_boss):
 
         self.velocidad_y = 0
         self.velocidad_x = 0
@@ -491,6 +491,90 @@ class SlimeVerde(Enemigo):
         self.movimiento(jugador) 
 
         self.crear_proyectil_slime(grupo_proyectiles_enemigos)
+
+        self.inflacion_xp(subir_nivel[1])
+        
+        self.colisiones_enemigo(grupo_enemigos, (("bottom", "top")))
+        self.colisiones_enemigo(grupo_enemigos, (("top", "bottom")))
+        self.colisiones_enemigo(grupo_enemigos, (("right", "left")))
+        self.colisiones_enemigo(grupo_enemigos, (("left", "right")))
+
+        if dicc_cartas["xray"] and self.vidas > 0:
+            dire = r"Seraph´s_wrath\assets\GUI\Inventory and Stats\vida"
+            vida_image = pygame.transform.scale(pygame.image.load(f"{dire}_{self.vidas}.png"), ((50, 50)))
+            vida_rect = self.image.get_rect(centerx = self.rect.centerx + 30, centery = self.rect.centery - 45)
+            pantalla.blit(vida_image, (vida_rect.x - offset_x, vida_rect.y - offset_y))
+
+        if dicc_cartas["glass_cannon"] and self.bandera_cannon:
+            self.daño = self.daño * 2
+            self.bandera_cannon = False
+
+        if dicc_cartas["midas"] and self.bandera_midas:
+            self.crawling_peg += 0.1
+            self.bandera_midas = False
+
+        if dicc_cartas["steam_final"] and self.bandera_steam:
+            self.bandera_steam = False
+            self.xp = self.xp * 1.2
+
+        for lado_0 in self.lista_colisiones:
+            for lado_1 in self.lista_colisiones:
+                if self.colision:
+                    self.colisiones_proyectiles(grupo_proyectiles, ((lado_0, lado_1)))
+
+        self.colision = True
+
+        for lado_0 in self.lista_colisiones:
+            for lado_1 in self.lista_colisiones:
+                if self.colision:
+                    self.colisiones_proyectiles(grupo_proyectiles_tp, ((lado_0, lado_1)))
+
+        self.colision = True
+
+        for lado_0 in self.lista_colisiones:
+            for lado_1 in self.lista_colisiones:
+                if self.colision:
+                    self.colisiones_jugador(jugador, ((lado_0, lado_1)), dicc_cartas)
+
+        self.colision = True
+        self.inflacion_xp(subir_nivel[1])
+
+class Boss(Enemigo):
+    def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad):
+        super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad = 0)
+        self.vidas = 50
+        self.velocidad_x = 2
+        self.velocidad_y = 2
+
+
+    def cargar_sprites(self, diccionario_sprites, que_hace):
+        if self.indice < len(diccionario_sprites[que_hace]) -1:
+            if self.tiempo_actual - self.ultima_animacion > self.cooldown_animacion:
+                self.indice += 1
+                self.ultima_animacion = self.tiempo_actual
+                self.image = diccionario_sprites[que_hace][self.indice]
+                self.mask = pygame.mask.from_surface(self.image)
+        else:
+            self.indice = 0
+
+
+    
+    def update(self, diccionarios_slimes, pantalla, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, 
+        jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos, diccionario_boss):
+
+        self.velocidad_y = 0
+        self.velocidad_x = 0
+        self.tiempo_actual = pygame.time.get_ticks() 
+        self.colision_piso = False
+        self.colision_arriba = False
+        self.colision_derecha = False
+        self.colision_izquierda = False
+
+        self.cargar_partes_rectangulos()
+        self.cargar_sprites(diccionario_boss, "abajo")
+        self.movimiento(jugador) 
+
+        # self.crear_proyectil_slime(grupo_proyectiles_enemigos)
 
         self.inflacion_xp(subir_nivel[1])
         

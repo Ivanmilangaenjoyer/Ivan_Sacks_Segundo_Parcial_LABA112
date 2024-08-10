@@ -78,6 +78,14 @@ slime_rojo = [
             pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\Red_Slime\derecha\Run_6.png"), ((128, 40))),
             ]
 
+boss_abajo = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo\abajo_0.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo\abajo_1.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo\abajo_2.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo\abajo_3.png"), ((93, 100))),
+            ]
+
+diccionario_boss = {"abajo": boss_abajo}
 diccionarios_slimes = {"azul": slime_azul, "verde": slime_verde, "rojo": slime_rojo}
 lista_sprites = {"nada": personaje_quieto, "derecha": personaje_derecha, "izquierda": personaje_izquierda,
                 "arriba": personaje_derecha, "abajo": personaje_derecha}
