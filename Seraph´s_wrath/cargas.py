@@ -85,7 +85,56 @@ boss_abajo = [
             pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo\abajo_3.png"), ((93, 100))),
             ]
 
-diccionario_boss = {"abajo": boss_abajo}
+boss_arriba = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba\arriba_0.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba\arriba_1.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba\arriba_2.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba\arriba_3.png"), ((93, 100))),
+            ]
+
+boss_derecha = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\derecha\derecha_0.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\derecha\derecha_1.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\derecha\derecha_2.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\derecha\derecha_3.png"), ((93, 100))),
+            ]
+
+boss_izquierda = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\izquierda\izquierda_0.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\izquierda\izquierda_1.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\izquierda\izquierda_2.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\izquierda\izquierda_3.png"), ((93, 100))),
+            ]
+
+boss_arriba_derecha = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba_derecha\arriba_derecha_0.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba_derecha\arriba_derecha_1.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba_derecha\arriba_derecha_2.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba_derecha\arriba_derecha_3.png"), ((93, 100))),
+            ]
+boss_arriba_izquierda = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba_izquierda\arriba_izquierda_0.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba_izquierda\arriba_izquierda_1.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba_izquierda\arriba_izquierda_2.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\arriba_izquierda\arriba_izquierda_3.png"), ((93, 100))),
+            ]
+boss_abajo_izquierda = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo_izquierda\abajo_izquierda_0.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo_izquierda\abajo_izquierda_1.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo_izquierda\abajo_izquierda_2.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo_izquierda\abajo_izquierda_3.png"), ((93, 100))),
+            ]
+
+boss_abajo_derecha = [
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo_derecha\abajo_derecha_0.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo_derecha\abajo_derecha_1.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo_derecha\abajo_derecha_2.png"), ((93, 100))),
+            pygame.transform.scale(pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\abajo_derecha\abajo_derecha_3.png"), ((93, 100))),
+            ]
+
+diccionario_boss = {"abajo": boss_abajo, "arriba": boss_arriba, "derecha": boss_derecha, "izquierda": boss_izquierda,
+                    "arriba_derecha": boss_arriba_derecha, "arriba_izquierda": boss_arriba_izquierda,
+                    "abajo_derecha": boss_abajo_derecha, "abajo_izquierda": boss_abajo_izquierda}
 diccionarios_slimes = {"azul": slime_azul, "verde": slime_verde, "rojo": slime_rojo}
 lista_sprites = {"nada": personaje_quieto, "derecha": personaje_derecha, "izquierda": personaje_izquierda,
                 "arriba": personaje_derecha, "abajo": personaje_derecha}

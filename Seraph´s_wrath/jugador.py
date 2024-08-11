@@ -172,15 +172,15 @@ class Enemigo(Jugador):
 
     def movimiento(self, jugador):
         if jugador.rect.centerx < self.rect.centerx and self.colision_izquierda == False:
-            self.velocidad_x = 2
-            self.rect.x -= self.velocidad_x
+            self.velocidad_x = -2
+            self.rect.x += self.velocidad_x
         if jugador.rect.centerx > self.rect.centerx and self.colision_derecha == False:
             self.velocidad_x = 2
             self.rect.x += self.velocidad_x
 
         if jugador.rect.centery < self.rect.centery and self.colision_arriba == False:
-            self.velocidad_y = 2
-            self.rect.y -= self.velocidad_y
+            self.velocidad_y = -2
+            self.rect.y += self.velocidad_y
         if jugador.rect.centery > self.rect.centery and self.colision_piso == False:
             self.velocidad_y = 2
             self.rect.y += self.velocidad_y
@@ -542,23 +542,47 @@ class SlimeVerde(Enemigo):
 class Boss(Enemigo):
     def __init__(self, dir_imagen, medidas, pos_x, pos_y, velocidad):
         super().__init__(dir_imagen, medidas, pos_x, pos_y, velocidad = 0)
-        self.vidas = 50
+        self.image = pygame.image.load(r"Seraph´s_wrath\assets\enemigos\Slimes\boss\derecha\derecha_0.png")
+        self.rect = self.image.get_rect(centerx = pos_x, centery = pos_y)
+        self.rect.width += 20
+        self.rect.height += 25
+        self.vidas = 20
         self.velocidad_x = 2
         self.velocidad_y = 2
+        self.direccion = "derecha"
 
-
-    def cargar_sprites(self, diccionario_sprites, que_hace):
-        if self.indice < len(diccionario_sprites[que_hace]) -1:
-            if self.tiempo_actual - self.ultima_animacion > self.cooldown_animacion:
-                self.indice += 1
-                self.ultima_animacion = self.tiempo_actual
-                self.image = diccionario_sprites[que_hace][self.indice]
-                self.mask = pygame.mask.from_surface(self.image)
-        else:
-            self.indice = 0
-
+    def que_hace_boss(self):
+        if self.velocidad_y > 0 and self.velocidad_x == 0:
+            self.direccion = "abajo"
+        if self.velocidad_y < 0 and self.velocidad_x == 0:
+            self.direccion = "arriba"
+        if self.velocidad_x > 0 and self.velocidad_y == 0:
+            self.direccion = "derecha"
+        if self.velocidad_x < 0 and self.velocidad_y == 0: 
+            self.direccion = "izquierda"
+        if self.velocidad_x > 0 and self.velocidad_y > 0:
+            self.direccion = "abajo_derecha"
+        if self.velocidad_x > 0 and self.velocidad_y < 0:
+            self.direccion = "arriba_derecha"
+        if self.velocidad_x < 0 and self.velocidad_y > 0:
+            self.direccion = "abajo_izquierda"
+        if self.velocidad_x < 0 and self.velocidad_y < 0:
+            self.direccion = "arriba_izquierda"    
 
     
+    def cargar_partes_rectangulos(self):
+        self.diccionario_rectangulos["main"] = self.rect
+
+        self.diccionario_rectangulos["top"] = pygame.Rect(self.rect.left + 15, self.rect.top +10, self.rect.width + 20, 15)
+
+        self.diccionario_rectangulos["right"] = pygame.Rect(self.rect.right - 20, self.rect.top + 10, 20, self.rect.height)
+
+        self.diccionario_rectangulos["left"] = pygame.Rect(self.rect.left, self.rect.top, 20, self.rect.height + 20)
+
+        self.diccionario_rectangulos["bottom"] = pygame.Rect(self.rect.left, self.rect.bottom, self.rect.width + 20, 20)
+
+
+
     def update(self, diccionarios_slimes, pantalla, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, 
         jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos, diccionario_boss):
 
@@ -571,9 +595,14 @@ class Boss(Enemigo):
         self.colision_izquierda = False
 
         self.cargar_partes_rectangulos()
-        self.cargar_sprites(diccionario_boss, "abajo")
         self.movimiento(jugador) 
+        self.que_hace_boss()
+        self.cargar_sprites(diccionario_boss, self.direccion)
 
+        # pygame.draw.rect(pantalla, (0,255,255), self.diccionario_rectangulos["right"])
+        # pygame.draw.rect(pantalla, (255,255,255), self.diccionario_rectangulos["left"])
+        # pygame.draw.rect(pantalla, (0,255,255), self.diccionario_rectangulos["top"])
+        # pygame.draw.rect(pantalla, (0,0,255), self.diccionario_rectangulos["main"])
         # self.crear_proyectil_slime(grupo_proyectiles_enemigos)
 
         self.inflacion_xp(subir_nivel[1])
