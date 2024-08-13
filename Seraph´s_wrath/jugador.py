@@ -550,6 +550,13 @@ class Boss(Enemigo):
         self.velocidad_x = 2
         self.velocidad_y = 2
         self.direccion = "derecha"
+        self.velocidad_x_dash = 0
+        self.velocidad_y_dash = 0
+        self.dasheando = False
+        self.tiempo_dasheando = 0
+        self.cooldown_dash = 5000
+        self.ultimo_dash = 0
+        self.distancia = 0
 
     def que_hace_boss(self):
         if self.velocidad_y > 0 and self.velocidad_x == 0:
@@ -581,14 +588,48 @@ class Boss(Enemigo):
 
         self.diccionario_rectangulos["bottom"] = pygame.Rect(self.rect.left, self.rect.bottom, self.rect.width + 20, 20)
 
+    def movimiento(self, jugador):
+        if self.dasheando and self.tiempo_dasheando <= 100:
+            self.rect.x += self.velocidad_x_dash * 2
+            self.rect.y += self.velocidad_y_dash * 2
+        else:
+            if jugador.rect.centerx < self.rect.centerx and self.colision_izquierda == False:
+                self.velocidad_x = -3
+                self.rect.x += self.velocidad_x
+            if jugador.rect.centerx > self.rect.centerx and self.colision_derecha == False:
+                self.velocidad_x = 3
+                self.rect.x += self.velocidad_x
 
+            if jugador.rect.centery < self.rect.centery and self.colision_arriba == False:
+                self.velocidad_y = -3
+                self.rect.y += self.velocidad_y
+            if jugador.rect.centery > self.rect.centery and self.colision_piso == False:
+                self.velocidad_y = 3
+                self.rect.y += self.velocidad_y
 
     def update(self, diccionarios_slimes, pantalla, grupo_proyectiles, grupo_proyectiles_tp, grupo_xp, subir_nivel, 
         jugador, grupo_enemigos, dicc_cartas, offset_x, offset_y, BalaSlimeVerde, grupo_proyectiles_enemigos, diccionario_boss):
+        dx = jugador.rect.centerx - self.rect.centerx
+        dy = jugador.rect.centery - self.rect.centery
+        self.distancia = math.sqrt(dx**2 + dy**2)
 
+        self.tiempo_actual = pygame.time.get_ticks() 
+
+        if self.distancia < 200:
+            if (self.tiempo_actual - self.ultimo_dash > self.cooldown_dash):
+                    self.dasheando = True
+                    self.velocidad_x_dash = self.velocidad_x
+                    self.velocidad_y_dash = self.velocidad_y
+                    self.ultimo_dash = self.tiempo_actual
+                    self.tiempo_dasheando = 0
+
+        if self.distancia > 350 or self.tiempo_dasheando > 100:
+            self.dasheando = False
+            self.tiempo_dasheando = 0
+
+        self.tiempo_dasheando += 3
         self.velocidad_y = 0
         self.velocidad_x = 0
-        self.tiempo_actual = pygame.time.get_ticks() 
         self.colision_piso = False
         self.colision_arriba = False
         self.colision_derecha = False
